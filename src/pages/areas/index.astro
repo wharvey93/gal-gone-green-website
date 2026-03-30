@@ -1,0 +1,102 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { locations } from '../../data/locations';
+
+const primary = locations.filter(l => l.driveMinutes <= 15);
+const secondary = locations.filter(l => l.driveMinutes > 15 && l.driveMinutes <= 35);
+const broader = locations.filter(l => l.driveMinutes > 35);
+---
+
+<BaseLayout
+  title="Service Areas | Eco-Friendly Cleaning Across the Shenandoah Valley"
+  description="Gal Gone Green serves 30+ communities across the Shenandoah Valley, from Harrisonburg and Broadway to Staunton, Lexington, and Front Royal. Find eco-friendly cleaning near you."
+  canonicalPath="/areas"
+>
+  <!-- Hero -->
+  <section class="py-16 md:py-20 bg-green-800 relative grain">
+    <div class="container relative z-10">
+      <div class="max-w-3xl">
+        <p class="text-green-300 font-medium text-sm uppercase tracking-widest mb-4 reveal">Where We Serve</p>
+        <h1 class="text-white mb-4 reveal">Serving 30+ Communities Across the Shenandoah Valley</h1>
+        <p class="text-green-100/80 text-lg leading-relaxed reveal">
+          Based in Broadway, Virginia, Gal Gone Green provides eco-friendly cleaning services to homes and businesses throughout the greater Harrisonburg area and the Shenandoah Valley. Select your community below to learn more.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Primary Market -->
+  <section class="section-padding bg-cream">
+    <div class="container">
+      <div class="mb-10 reveal">
+        <p class="text-green-600 font-medium text-sm uppercase tracking-widest mb-2">Home Base</p>
+        <h2 class="mb-2">Harrisonburg Metro</h2>
+        <p class="text-charcoal-light">Our closest communities, within 15 minutes of our Broadway home base.</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {primary.map((loc, i) => (
+          <a href={`/areas/${loc.slug}`} class="group bg-white rounded-xl p-6 shadow-sm card-hover reveal" style={`transition-delay: ${i * 50}ms`}>
+            <h3 class="text-lg group-hover:text-green-600 transition-colors mb-1">{loc.name}</h3>
+            <p class="text-charcoal-muted text-sm">{loc.county}</p>
+            {loc.driveMinutes === 0
+              ? <p class="text-green-600 text-xs font-medium mt-2">Our Home Base</p>
+              : <p class="text-charcoal-muted text-xs mt-2">~{loc.driveMinutes} min from Broadway</p>
+            }
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Secondary Markets -->
+  <section class="section-padding bg-white">
+    <div class="container">
+      <div class="mb-10 reveal">
+        <p class="text-green-600 font-medium text-sm uppercase tracking-widest mb-2">Regular Service</p>
+        <h2 class="mb-2">Within 30 Minutes</h2>
+        <p class="text-charcoal-light">Communities we serve on regular weekly routes.</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {secondary.map((loc, i) => (
+          <a href={`/areas/${loc.slug}`} class="group bg-green-50 rounded-xl p-6 card-hover reveal" style={`transition-delay: ${i * 50}ms`}>
+            <h3 class="text-lg group-hover:text-green-600 transition-colors mb-1">{loc.name}</h3>
+            <p class="text-charcoal-muted text-sm">{loc.county}</p>
+            <p class="text-charcoal-muted text-xs mt-2">~{loc.driveMinutes} min from Broadway</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Broader Valley -->
+  <section class="section-padding bg-cream">
+    <div class="container">
+      <div class="mb-10 reveal">
+        <p class="text-green-600 font-medium text-sm uppercase tracking-widest mb-2">Extended Service Area</p>
+        <h2 class="mb-2">Broader Shenandoah Valley</h2>
+        <p class="text-charcoal-light">Communities at the edges of our service area, served on scheduled routes.</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {broader.map((loc, i) => (
+          <a href={`/areas/${loc.slug}`} class="group bg-white rounded-xl p-6 shadow-sm card-hover reveal" style={`transition-delay: ${i * 50}ms`}>
+            <h3 class="text-lg group-hover:text-green-600 transition-colors mb-1">{loc.name}</h3>
+            <p class="text-charcoal-muted text-sm">{loc.county}</p>
+            <p class="text-charcoal-muted text-xs mt-2">~{loc.driveMinutes} min from Broadway</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section-padding bg-green-800 text-white relative grain">
+    <div class="container text-center reveal">
+      <h2 class="text-white mb-4">Don't See Your Town?</h2>
+      <p class="text-green-100/80 text-lg mb-8 max-w-xl mx-auto">If you're in the Shenandoah Valley and don't see your community listed, reach out — we may still be able to serve you.</p>
+      <a href="/contact" class="btn-primary text-lg">
+        Contact Us
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+      </a>
+    </div>
+  </section>
+</BaseLayout>

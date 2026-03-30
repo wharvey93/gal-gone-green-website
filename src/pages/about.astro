@@ -1,0 +1,164 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import aboutImg from '../assets/images/photos/about-us.jpg';
+import bedroomImg from '../assets/images/photos/bedroom-clean.jpg';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "mainEntity": {
+    "@type": "LocalBusiness",
+    "name": "Gal Gone Green",
+    "foundingDate": "2011",
+    "description": "Family-founded eco-friendly cleaning company serving the Shenandoah Valley since 2011.",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "409 S Main Street",
+      "addressLocality": "Broadway",
+      "addressRegion": "VA",
+      "postalCode": "22815"
+    }
+  }
+};
+---
+
+<BaseLayout
+  title="About Gal Gone Green | Eco-Friendly Cleaning Since 2011"
+  description="Learn about Gal Gone Green — a family-founded, locally owned cleaning company serving Harrisonburg and the Shenandoah Valley since 2011. Our story, values, and commitment to safer cleaning."
+  canonicalPath="/about"
+  schema={schema}
+>
+  <!-- Hero -->
+  <section class="relative py-20 md:py-28 bg-green-800 overflow-hidden grain">
+    <div class="container relative z-10">
+      <div class="max-w-3xl">
+        <p class="text-green-300 font-medium text-sm uppercase tracking-widest mb-4 reveal">Our Story</p>
+        <h1 class="text-white mb-6 reveal">Rooted in the Valley. Committed to Clean.</h1>
+        <p class="text-green-100/80 text-lg md:text-xl leading-relaxed reveal">
+          Since 2011, we've been cleaning homes and businesses across the Shenandoah Valley with care, consistency, and products you can feel good about.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Story Section -->
+  <section class="section-padding bg-cream">
+    <div class="container">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div class="reveal">
+          <Image
+            src={aboutImg}
+            alt="The Gal Gone Green team"
+            class="rounded-2xl shadow-lg w-full"
+            widths={[400, 600]}
+            sizes="(max-width: 1024px) 100vw, 50vw"
+          />
+        </div>
+        <div class="reveal">
+          <p class="text-green-600 font-medium text-sm uppercase tracking-widest mb-3">Est. 2011</p>
+          <h2 class="mb-6">A Family Business, Built on Trust</h2>
+          <div class="space-y-4 text-charcoal-light leading-relaxed">
+            <p>
+              Gal Gone Green was established in 2011 with a straightforward idea: provide professional cleaning services using products that are safer for families, pets, and the environment — without charging a premium for doing the right thing.
+            </p>
+            <p>
+              From day one, we've been environmentally focused. We chose our name because it reflects who we are — not as a marketing gimmick, but as a genuine commitment to thoughtful, responsible cleaning.
+            </p>
+            <p>
+              Unlike many franchises, we never rush through appointments by over-booking. We take our time to clean your place to your satisfaction. That personal attention is what keeps our clients coming back, many of whom have been with us for years.
+            </p>
+            <p>
+              Based in Broadway, Virginia, we serve the greater Harrisonburg and Shenandoah Valley area. We're locally owned and operated — not a franchise. When you call, you're talking to someone who lives in your community.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mission & Values -->
+  <section class="section-padding bg-white">
+    <div class="container">
+      <div class="max-w-3xl mx-auto">
+        <div class="text-center mb-14 reveal">
+          <p class="text-green-600 font-medium text-sm uppercase tracking-widest mb-3">What Drives Us</p>
+          <h2>Mission &amp; Values</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="bg-green-50 rounded-2xl p-8 reveal">
+            <div class="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>
+            </div>
+            <h3 class="text-lg mb-3">Quality &amp; Integrity</h3>
+            <p class="text-charcoal-light text-sm leading-relaxed">
+              Professional cleaning services distinguished by quality and integrity. We show up when we say we will, we clean thoroughly, and we stand behind our work.
+            </p>
+          </div>
+
+          <div class="bg-green-50 rounded-2xl p-8 reveal">
+            <div class="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+            </div>
+            <h3 class="text-lg mb-3">Safer for Everyone</h3>
+            <p class="text-charcoal-light text-sm leading-relaxed">
+              We use cleaning products that are safer for your family, your pets, and your home. The brand name says it — we let our commitment to greener cleaning speak for itself.
+            </p>
+          </div>
+
+          <div class="bg-green-50 rounded-2xl p-8 reveal">
+            <div class="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+            </div>
+            <h3 class="text-lg mb-3">Community First</h3>
+            <p class="text-charcoal-light text-sm leading-relaxed">
+              We live here, we work here, and we care about this community. Being locally owned means real accountability — our reputation is everything.
+            </p>
+          </div>
+
+          <div class="bg-green-50 rounded-2xl p-8 reveal">
+            <div class="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+            </div>
+            <h3 class="text-lg mb-3">Personal Touch</h3>
+            <p class="text-charcoal-light text-sm leading-relaxed">
+              Every home and business is different. We take the time to understand what matters to you and customize our service accordingly.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Our Promise -->
+  <section class="section-padding bg-green-50 relative grain">
+    <div class="container">
+      <div class="max-w-3xl mx-auto text-center reveal">
+        <div class="w-16 h-16 rounded-full bg-green-600 flex items-center justify-center mx-auto mb-6">
+          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        </div>
+        <h2 class="mb-4">Our Promise</h2>
+        <p class="text-charcoal-light text-lg leading-relaxed mb-6">
+          If you're not completely satisfied with any cleaning, contact us within 24 hours and we'll come back to re-clean the area at no additional charge. No questions asked. That's how confident we are in our team's work.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section-padding bg-green-800 text-white relative grain">
+    <div class="container">
+      <div class="max-w-3xl mx-auto text-center reveal">
+        <h2 class="text-white mb-4">Ready to Experience the Difference?</h2>
+        <p class="text-green-100/80 text-lg mb-8">
+          Join the families and businesses across the Shenandoah Valley who trust Gal Gone Green with their spaces.
+        </p>
+        <a href="/contact" class="btn-primary text-lg">
+          Book a Cleaning
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

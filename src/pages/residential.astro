@@ -1,0 +1,258 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import heroImg from '../assets/images/photos/bedroom-clean.jpg';
+import deepCleanImg from '../assets/images/photos/deep-clean.jpg';
+import livingRoomImg from '../assets/images/photos/living-room-3.png';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "serviceType": "Residential Cleaning",
+  "provider": {
+    "@type": "LocalBusiness",
+    "name": "Gal Gone Green",
+    "telephone": "+15712097745",
+    "address": { "@type": "PostalAddress", "addressLocality": "Broadway", "addressRegion": "VA" }
+  },
+  "areaServed": "Shenandoah Valley, Virginia",
+  "description": "Professional eco-friendly residential cleaning including deep cleaning, recurring bi-weekly and monthly service, and custom plans."
+};
+
+const faq = [
+  { q: "How much does house cleaning cost in Harrisonburg, VA?", a: "Pricing varies based on the size of your home and the type of cleaning needed. Contact us for a free, no-obligation quote tailored to your space." },
+  { q: "What eco-friendly cleaning products does Gal Gone Green use?", a: "We use cleaning products that are safer for your family, pets, and home. Our products are effective at cleaning while being gentler on the environment." },
+  { q: "Do I need to be home during the cleaning?", a: "Not at all. Many of our clients provide a key or entry code. We're fully insured and your home is in safe hands." },
+  { q: "How long does a deep cleaning take?", a: "A thorough deep cleaning typically takes 3-5 hours depending on the size of your home. We never rush — we stay until the job is done right." },
+  { q: "Can I customize what gets cleaned?", a: "Absolutely. We're happy to create a custom plan that focuses on the areas that matter most to you." },
+];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faq.map(f => ({
+    "@type": "Question",
+    "name": f.q,
+    "acceptedAnswer": { "@type": "Answer", "text": f.a }
+  }))
+};
+---
+
+<BaseLayout
+  title="Residential Cleaning Services in Harrisonburg, VA | Gal Gone Green"
+  description="Professional eco-friendly home cleaning in Harrisonburg and the Shenandoah Valley. Deep cleaning, recurring bi-weekly and monthly service, and custom plans. Satisfaction guaranteed."
+  canonicalPath="/residential"
+  schema={schema}
+>
+  <!-- Hero -->
+  <section class="relative py-20 md:py-28 overflow-hidden">
+    <div class="absolute inset-0">
+      <Image
+        src={heroImg}
+        alt="Professionally cleaned bedroom in a Shenandoah Valley home"
+        class="w-full h-full object-cover"
+        widths={[640, 1024, 1440]}
+        sizes="100vw"
+        loading="eager"
+      />
+      <div class="absolute inset-0 bg-gradient-to-r from-green-950/85 via-green-900/70 to-green-800/50"></div>
+    </div>
+    <div class="container relative z-10">
+      <div class="max-w-2xl">
+        <p class="text-green-300 font-medium text-sm uppercase tracking-widest mb-4 reveal">Residential Services</p>
+        <h1 class="text-white mb-6 reveal">Come Home to a Space That Feels Brand New</h1>
+        <p class="text-green-100/80 text-lg leading-relaxed reveal">
+          Whether you need a one-time deep clean or regular upkeep, we bring the same care and thoroughness to every visit. Your home deserves it.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Deep Cleaning -->
+  <section id="deep-cleaning" class="section-padding bg-cream">
+    <div class="container">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div class="reveal">
+          <p class="text-green-600 font-medium text-sm uppercase tracking-widest mb-3">One-Time Service</p>
+          <h2 class="mb-6">One-Time Deep Cleaning</h2>
+          <p class="text-charcoal-light leading-relaxed mb-6">
+            A thorough, top-to-bottom cleaning that reaches every corner, surface, and detail. Perfect for a fresh start, hosting guests, seasonal refreshes, or when you're moving in or out.
+          </p>
+          <h3 class="text-base font-semibold text-charcoal mb-3 font-[var(--font-body)]">What's Included:</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 mb-8">
+            {[
+              'Kitchen — appliances, countertops, cabinets, sink, floor',
+              'Bathrooms — scrub tub, shower, toilet, mirrors, fixtures',
+              'Bedrooms — dust, vacuum, make beds, clean surfaces',
+              'Living areas — dust, vacuum, mop, wipe baseboards',
+              'Windows — interior sills and frames',
+              'Details — light switches, door handles, vents',
+            ].map(item => (
+              <div class="flex items-start gap-2 text-sm text-charcoal-light py-1">
+                <svg class="w-4 h-4 text-green-500 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                <span>{item}</span>
+              </div>
+            ))}
+          </div>
+          <h3 class="text-base font-semibold text-charcoal mb-3 font-[var(--font-body)]">Perfect For:</h3>
+          <div class="flex flex-wrap gap-2 mb-8">
+            {['Before hosting guests', 'Seasonal refresh', 'Moving into a new home', 'Post-construction', 'Spring cleaning'].map(tag => (
+              <span class="px-3 py-1.5 bg-green-100 text-green-700 text-xs font-medium rounded-full">{tag}</span>
+            ))}
+          </div>
+          <a href="/contact" class="btn-primary">Get a Free Quote</a>
+        </div>
+        <div class="reveal">
+          <Image
+            src={deepCleanImg}
+            alt="Professional deep cleaning service"
+            class="rounded-2xl shadow-lg w-full"
+            widths={[400, 600]}
+            sizes="(max-width: 1024px) 100vw, 50vw"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recurring Service -->
+  <section id="recurring" class="section-padding bg-white">
+    <div class="container">
+      <div class="text-center max-w-2xl mx-auto mb-14 reveal">
+        <p class="text-green-600 font-medium text-sm uppercase tracking-widest mb-3">Recurring Service</p>
+        <h2 class="mb-4">Consistent Clean, Every Time</h2>
+        <p class="text-charcoal-light text-lg">Set it and forget it. Our recurring cleaning plans keep your home fresh so you can focus on what matters.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <!-- Bi-weekly -->
+        <div class="bg-green-50 rounded-2xl p-8 card-hover reveal">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-12 h-12 rounded-xl bg-green-600 flex items-center justify-center">
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+            </div>
+            <div>
+              <h3 class="text-xl">Every 2 Weeks</h3>
+              <p class="text-green-600 text-sm font-medium">Most Popular</p>
+            </div>
+          </div>
+          <p class="text-charcoal-light text-sm leading-relaxed mb-4">
+            The sweet spot for most families. Come home to a clean house every two weeks without lifting a finger. Consistent upkeep means the clean lasts longer between visits.
+          </p>
+          <ul class="space-y-2 mb-6">
+            {['Full home cleaning every visit', 'Consistent team assigned to your home', 'Priority scheduling', 'Best value for regular service'].map(item => (
+              <li class="flex items-start gap-2 text-sm text-charcoal-light">
+                <svg class="w-4 h-4 text-green-500 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                {item}
+              </li>
+            ))}
+          </ul>
+          <a href="/contact" class="btn-secondary w-full justify-center">Get Started</a>
+        </div>
+
+        <!-- Monthly -->
+        <div class="bg-cream-dark rounded-2xl p-8 card-hover reveal">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-12 h-12 rounded-xl bg-green-700 flex items-center justify-center">
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+            </div>
+            <div>
+              <h3 class="text-xl">Every Month</h3>
+              <p class="text-charcoal-muted text-sm font-medium">Maintenance</p>
+            </div>
+          </div>
+          <p class="text-charcoal-light text-sm leading-relaxed mb-4">
+            Perfect for maintaining a baseline of cleanliness between deeper cleans. A monthly refresh keeps your home healthy and prevents buildup from getting ahead of you.
+          </p>
+          <ul class="space-y-2 mb-6">
+            {['Thorough monthly cleaning', 'Great for smaller homes', 'Maintain between deep cleans', 'Flexible scheduling'].map(item => (
+              <li class="flex items-start gap-2 text-sm text-charcoal-light">
+                <svg class="w-4 h-4 text-green-500 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                {item}
+              </li>
+            ))}
+          </ul>
+          <a href="/contact" class="btn-secondary w-full justify-center">Get Started</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Custom Plans -->
+  <section class="section-padding bg-green-50 relative grain">
+    <div class="container">
+      <div class="max-w-3xl mx-auto text-center reveal">
+        <h2 class="mb-4">Have a Unique Situation? Let's Talk.</h2>
+        <p class="text-charcoal-light text-lg mb-8">
+          Not every home fits neatly into a standard plan. Whether you need specific rooms, special attention to certain areas, or a completely custom schedule, we're happy to accommodate.
+        </p>
+        <a href="/contact" class="btn-primary">
+          Request a Custom Quote
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="section-padding bg-white">
+    <div class="container">
+      <div class="text-center max-w-2xl mx-auto mb-14 reveal">
+        <h2>How It Works</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto relative">
+        <div class="hidden md:block absolute top-14 left-[16.67%] right-[16.67%] h-0.5 bg-green-200"></div>
+        {[
+          { step: '1', title: 'Select Your Service', desc: 'Choose from deep cleaning, recurring, or a custom plan.' },
+          { step: '2', title: 'Set Your Schedule', desc: 'Pick dates and times that work for your household.' },
+          { step: '3', title: 'We Clean, You Relax', desc: 'Our team arrives with everything needed. Enjoy your clean home.' },
+        ].map((item, i) => (
+          <div class="text-center reveal" style={`transition-delay: ${i * 150}ms`}>
+            <div class="w-14 h-14 rounded-full bg-green-600 text-white flex items-center justify-center text-xl font-bold font-[var(--font-heading)] mx-auto mb-5 relative z-10 shadow-lg shadow-green-600/20">{item.step}</div>
+            <h3 class="text-lg mb-2">{item.title}</h3>
+            <p class="text-charcoal-light text-sm leading-relaxed">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section-padding bg-cream">
+    <div class="container">
+      <div class="max-w-3xl mx-auto">
+        <div class="text-center mb-12 reveal">
+          <h2>Frequently Asked Questions</h2>
+        </div>
+        <div class="space-y-4">
+          {faq.map((item, i) => (
+            <details class="group bg-white rounded-xl shadow-sm reveal" style={`transition-delay: ${i * 60}ms`}>
+              <summary class="flex items-center justify-between cursor-pointer p-6 text-charcoal font-medium hover:text-green-700 transition-colors">
+                <span class="pr-4">{item.q}</span>
+                <svg class="w-5 h-5 text-green-600 shrink-0 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+              </summary>
+              <div class="px-6 pb-6 text-charcoal-light text-sm leading-relaxed">
+                {item.a}
+              </div>
+            </details>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section-padding bg-green-800 text-white relative grain">
+    <div class="container text-center reveal">
+      <h2 class="text-white mb-4">Ready for a Cleaner Home?</h2>
+      <p class="text-green-100/80 text-lg mb-8 max-w-xl mx-auto">Book your first cleaning and see why families across the Shenandoah Valley trust Gal Gone Green.</p>
+      <a href="/contact" class="btn-primary text-lg">
+        Book a Cleaning
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- FAQ Schema -->
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</BaseLayout>

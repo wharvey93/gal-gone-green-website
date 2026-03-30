@@ -1,0 +1,213 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import commercialImg from '../assets/images/photos/janitorial.png';
+import airbnbImg from '../assets/images/photos/airbnb.png';
+import moveInImg from '../assets/images/photos/move-in.png';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "serviceType": "Commercial Cleaning",
+  "provider": {
+    "@type": "LocalBusiness",
+    "name": "Gal Gone Green",
+    "telephone": "+15712097745",
+    "address": { "@type": "PostalAddress", "addressLocality": "Broadway", "addressRegion": "VA" }
+  },
+  "areaServed": "Shenandoah Valley, Virginia",
+  "description": "Professional eco-friendly commercial cleaning including offices, short-term rental turnovers, and move-in/move-out deep cleaning."
+};
+---
+
+<BaseLayout
+  title="Commercial Cleaning Services in Harrisonburg, VA | Gal Gone Green"
+  description="Professional eco-friendly commercial cleaning in Harrisonburg and the Shenandoah Valley. Office cleaning, Airbnb turnovers, move-in/move-out service. Locally owned since 2011."
+  canonicalPath="/commercial"
+  schema={schema}
+>
+  <!-- Hero -->
+  <section class="relative py-20 md:py-28 overflow-hidden">
+    <div class="absolute inset-0">
+      <Image
+        src={commercialImg}
+        alt="Professional commercial office cleaning"
+        class="w-full h-full object-cover"
+        widths={[640, 1024, 1440]}
+        sizes="100vw"
+        loading="eager"
+      />
+      <div class="absolute inset-0 bg-gradient-to-r from-green-950/85 via-green-900/70 to-green-800/50"></div>
+    </div>
+    <div class="container relative z-10">
+      <div class="max-w-2xl">
+        <p class="text-green-300 font-medium text-sm uppercase tracking-widest mb-4 reveal">Commercial Services</p>
+        <h1 class="text-white mb-6 reveal">A Clean Space Says Everything About Your Business</h1>
+        <p class="text-green-100/80 text-lg leading-relaxed reveal">
+          From offices to Airbnb turnovers to property transitions, we bring professional-grade cleaning with products that are safer for everyone.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Office Cleaning -->
+  <section class="section-padding bg-cream">
+    <div class="container">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div class="reveal">
+          <p class="text-green-600 font-medium text-sm uppercase tracking-widest mb-3">Offices &amp; Workspaces</p>
+          <h2 class="mb-6">Office Cleaning</h2>
+          <p class="text-charcoal-light leading-relaxed mb-6">
+            A clean workspace is a productive workspace. We provide comprehensive office cleaning that covers every surface your team and clients interact with — desks, common areas, conference rooms, breakrooms, and high-touch surfaces throughout.
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 mb-8">
+            {[
+              'Desks, workstations, and cubicles',
+              'Conference and meeting rooms',
+              'Breakrooms and kitchen areas',
+              'Restroom sanitization',
+              'Common areas and lobbies',
+              'High-touch surface disinfection',
+              'Trash removal and recycling',
+              'Floor care — vacuum and mop',
+            ].map(item => (
+              <div class="flex items-start gap-2 text-sm text-charcoal-light py-1">
+                <svg class="w-4 h-4 text-green-500 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                <span>{item}</span>
+              </div>
+            ))}
+          </div>
+          <a href="/contact" class="btn-primary">Get a Commercial Quote</a>
+        </div>
+        <div class="reveal">
+          <Image
+            src={commercialImg}
+            alt="Clean professional office space"
+            class="rounded-2xl shadow-lg w-full"
+            widths={[400, 600]}
+            sizes="(max-width: 1024px) 100vw, 50vw"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Airbnb / Short-Term Rental -->
+  <section id="airbnb" class="section-padding bg-white">
+    <div class="container">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div class="order-2 lg:order-1 reveal">
+          <Image
+            src={airbnbImg}
+            alt="Guest-ready Airbnb vacation rental cleaning"
+            class="rounded-2xl shadow-lg w-full"
+            widths={[400, 600]}
+            sizes="(max-width: 1024px) 100vw, 50vw"
+          />
+        </div>
+        <div class="order-1 lg:order-2 reveal">
+          <p class="text-green-600 font-medium text-sm uppercase tracking-widest mb-3">Vacation Rentals</p>
+          <h2 class="mb-6">Short-Term Rental &amp; Airbnb Turnover</h2>
+          <p class="text-charcoal-light leading-relaxed mb-4">
+            We treat your rental like we would be the ones staying there. Quick turnaround times, meticulous attention to detail, and the kind of clean that earns 5-star reviews from your guests.
+          </p>
+          <p class="text-charcoal-light leading-relaxed mb-6">
+            Whether you manage one property or ten, we work with your booking schedule to ensure a seamless guest experience every time.
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 mb-8">
+            {[
+              'Full property turnover cleaning',
+              'Linen change and bed making',
+              'Kitchen deep clean and restock check',
+              'Bathroom sanitization',
+              'Guest-ready presentation',
+              'Quick turnaround between bookings',
+              'Inventory and damage reporting',
+              'Flexible scheduling around bookings',
+            ].map(item => (
+              <div class="flex items-start gap-2 text-sm text-charcoal-light py-1">
+                <svg class="w-4 h-4 text-green-500 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                <span>{item}</span>
+              </div>
+            ))}
+          </div>
+          <a href="/contact" class="btn-primary">Get a Quote</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Move-In / Move-Out -->
+  <section class="section-padding bg-green-50 relative grain">
+    <div class="container">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div class="reveal">
+          <p class="text-green-600 font-medium text-sm uppercase tracking-widest mb-3">Property Transitions</p>
+          <h2 class="mb-6">Move-In / Move-Out Cleaning</h2>
+          <p class="text-charcoal-light leading-relaxed mb-6">
+            Moving is stressful enough without worrying about cleaning. Whether you're a landlord, property manager, or tenant, we handle the deep cleaning so you can focus on the move. We make sure the space is spotless for whoever walks in next.
+          </p>
+          <div class="flex flex-wrap gap-2 mb-8">
+            {['Landlords', 'Property managers', 'Tenants', 'Real estate agents', 'New homeowners'].map(tag => (
+              <span class="px-3 py-1.5 bg-green-100 text-green-700 text-xs font-medium rounded-full">Ideal for: {tag}</span>
+            ))}
+          </div>
+          <a href="/contact" class="btn-primary">Get a Quote</a>
+        </div>
+        <div class="reveal">
+          <Image
+            src={moveInImg}
+            alt="Move-in move-out deep cleaning service"
+            class="rounded-2xl shadow-lg w-full"
+            widths={[400, 600]}
+            sizes="(max-width: 1024px) 100vw, 50vw"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Custom Commercial -->
+  <section class="section-padding bg-white">
+    <div class="container">
+      <div class="max-w-3xl mx-auto text-center reveal">
+        <h2 class="mb-4">Custom Commercial Plans</h2>
+        <p class="text-charcoal-light text-lg mb-6">
+          Construction cleanup, event venues, medical offices, retail spaces — if you need it cleaned, we can handle it. Every business is different, and we build our service around your needs.
+        </p>
+        <h3 class="text-lg mb-4">Why businesses choose Gal Gone Green:</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl mx-auto text-left mb-8">
+          {[
+            'Safer products for your employees and customers',
+            'Consistent, reliable scheduling',
+            'Fully insured and bonded',
+            'No long-term contracts required',
+            'Local accountability — we live here too',
+            'Over a decade of commercial experience',
+          ].map(item => (
+            <div class="flex items-start gap-2 text-sm text-charcoal-light">
+              <svg class="w-4 h-4 text-green-500 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+              <span>{item}</span>
+            </div>
+          ))}
+        </div>
+        <a href="/contact" class="btn-primary">
+          Get a Commercial Quote
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section-padding bg-green-800 text-white relative grain">
+    <div class="container text-center reveal">
+      <h2 class="text-white mb-4">Let's Keep Your Business Spotless</h2>
+      <p class="text-green-100/80 text-lg mb-8 max-w-xl mx-auto">Get a free, no-obligation quote for your commercial cleaning needs. We'll work around your schedule.</p>
+      <a href="/contact" class="btn-primary text-lg">
+        Get a Commercial Quote
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+      </a>
+    </div>
+  </section>
+</BaseLayout>
