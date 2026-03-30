@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Terms of Service | Gal Gone Green"
+  description="Terms of service for Gal Gone Green LLC — the terms that govern use of our website and cleaning services."
+  canonicalPath="/terms"
+>
+  <section class="py-16 md:py-20 bg-green-800 relative grain">
+    <div class="container relative z-10">
+      <h1 class="text-white reveal">Terms of Service</h1>
+      <p class="text-green-100/80 mt-2 reveal">Last updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
+    </div>
+  </section>
+
+  <section class="section-padding bg-cream">
+    <div class="container">
+      <div class="max-w-3xl mx-auto prose prose-charcoal">
+        <div class="space-y-8 text-charcoal-light leading-relaxed">
+          <div>
+            <h2 class="text-xl mb-3">Agreement to Terms</h2>
+            <p>By accessing or using the Gal Gone Green website (galgonegreen.com) or engaging our cleaning services, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our website or services.</p>
+          </div>
+
+          <div>
+            <h2 class="text-xl mb-3">Services</h2>
+            <p>Gal Gone Green LLC provides residential and commercial cleaning services in the Shenandoah Valley, Virginia area. All services are subject to availability and scheduling. Specific service details, pricing, and terms are agreed upon between the client and Gal Gone Green prior to service delivery.</p>
+          </div>
+
+          <div>
+            <h2 class="text-xl mb-3">Scheduling and Cancellation</h2>
+            <ul class="list-disc pl-6 mt-2 space-y-1">
+              <li>We request at least 24 hours' notice for cancellations or rescheduling</li>
+              <li>Late cancellations (less than 24 hours) may be subject to a cancellation fee</li>
+              <li>We will make reasonable efforts to accommodate schedule changes</li>
+            </ul>
+          </div>
+
+          <div>
+            <h2 class="text-xl mb-3">Satisfaction Guarantee</h2>
+            <p>If you are not fully satisfied with our cleaning services, contact us within 24 hours and we will arrange to re-clean the affected areas at no additional charge. This guarantee applies to the quality of cleaning work performed, not to the scope of services agreed upon.</p>
+          </div>
+
+          <div>
+            <h2 class="text-xl mb-3">Access and Entry</h2>
+            <p>Clients are responsible for providing safe and reasonable access to the areas to be cleaned. If you provide keys, entry codes, or other access methods, you do so at your own discretion. We take reasonable care to secure your property during and after service.</p>
+          </div>
+
+          <div>
+            <h2 class="text-xl mb-3">Liability</h2>
+            <p>Gal Gone Green LLC is fully insured. In the event of accidental damage during cleaning, please notify us within 24 hours. We will assess the situation and work to resolve it fairly. Our liability is limited to the cost of repair or replacement of the damaged item, up to the value of the cleaning service provided.</p>
+          </div>
+
+          <div>
+            <h2 class="text-xl mb-3">Payment</h2>
+            <p>Payment terms are agreed upon before service begins. Payment is due upon completion of service unless other arrangements have been made in advance.</p>
+          </div>
+
+          <div>
+            <h2 class="text-xl mb-3">Website Use</h2>
+            <p>The content on this website is for informational purposes only. While we strive to keep information accurate and up-to-date, we make no warranties about the completeness or accuracy of website content. Prices, services, and availability are subject to change without notice.</p>
+          </div>
+
+          <div>
+            <h2 class="text-xl mb-3">Intellectual Property</h2>
+            <p>All content on this website, including text, images, logos, and design, is the property of Gal Gone Green LLC and is protected by applicable copyright and trademark laws.</p>
+          </div>
+
+          <div>
+            <h2 class="text-xl mb-3">Governing Law</h2>
+            <p>These terms are governed by the laws of the Commonwealth of Virginia. Any disputes arising from these terms or our services shall be resolved in the courts of Rockingham County, Virginia.</p>
+          </div>
+
+          <div>
+            <h2 class="text-xl mb-3">Changes to Terms</h2>
+            <p>We reserve the right to update these terms at any time. Changes will be posted on this page with an updated effective date. Continued use of our website or services after changes constitutes acceptance of the updated terms.</p>
+          </div>
+
+          <div>
+            <h2 class="text-xl mb-3">Contact Us</h2>
+            <p>If you have questions about these terms, please contact us:</p>
+            <ul class="list-none mt-2 space-y-1">
+              <li>Email: <a href="mailto:hello@galgonegreen.com">hello@galgonegreen.com</a></li>
+              <li>Phone: <a href="tel:+15712097745">(571) 209-7745</a></li>
+              <li>Address: 409 S Main Street, Broadway, VA 22815</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

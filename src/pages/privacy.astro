@@ -1,0 +1,97 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Privacy Policy | Gal Gone Green"
+  description="Privacy policy for Gal Gone Green LLC — how we collect, use, and protect your information."
+  canonicalPath="/privacy"
+>
+  <section class="py-16 md:py-20 bg-green-800 relative grain">
+    <div class="container relative z-10">
+      <h1 class="text-white reveal">Privacy Policy</h1>
+      <p class="text-green-100/80 mt-2 reveal">Last updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
+    </div>
+  </section>
+
+  <section class="section-padding bg-cream">
+    <div class="container">
+      <div class="max-w-3xl mx-auto prose prose-charcoal">
+        <div class="space-y-8 text-charcoal-light leading-relaxed">
+          <div>
+            <h2 class="text-xl mb-3">Who We Are</h2>
+            <p>Gal Gone Green LLC ("we," "us," or "our") is an eco-friendly cleaning company based in Broadway, Virginia. This privacy policy explains how we collect, use, and protect information when you visit our website (galgonegreen.com) or use our services.</p>
+          </div>
+
+          <div>
+            <h2 class="text-xl mb-3">Information We Collect</h2>
+            <p>We collect information you provide directly to us, including:</p>
+            <ul class="list-disc pl-6 mt-2 space-y-1">
+              <li>Name, email address, phone number, and physical address when you fill out our contact form or request a quote</li>
+              <li>Information about your cleaning needs (service type, frequency, special requests)</li>
+              <li>Any other information you choose to provide in messages to us</li>
+            </ul>
+            <p class="mt-3">We also automatically collect basic website usage data through Plausible Analytics, a privacy-focused analytics tool that does not use cookies or collect personal information.</p>
+          </div>
+
+          <div>
+            <h2 class="text-xl mb-3">How We Use Your Information</h2>
+            <p>We use the information we collect to:</p>
+            <ul class="list-disc pl-6 mt-2 space-y-1">
+              <li>Respond to your inquiries and provide quotes</li>
+              <li>Schedule and deliver cleaning services</li>
+              <li>Communicate with you about your service</li>
+              <li>Improve our website and services</li>
+            </ul>
+            <p class="mt-3">We do not sell, rent, or share your personal information with third parties for their marketing purposes.</p>
+          </div>
+
+          <div>
+            <h2 class="text-xl mb-3">Information Sharing</h2>
+            <p>We may share your information only in the following circumstances:</p>
+            <ul class="list-disc pl-6 mt-2 space-y-1">
+              <li>With service providers who assist in operating our business (scheduling software, email services)</li>
+              <li>When required by law or to protect our rights</li>
+              <li>With your consent</li>
+            </ul>
+          </div>
+
+          <div>
+            <h2 class="text-xl mb-3">Data Security</h2>
+            <p>We take reasonable measures to protect your personal information from unauthorized access, use, or disclosure. However, no method of electronic transmission or storage is 100% secure.</p>
+          </div>
+
+          <div>
+            <h2 class="text-xl mb-3">Cookies</h2>
+            <p>Our website does not use cookies for tracking. We use Plausible Analytics, which is a cookie-free, privacy-respecting analytics tool.</p>
+          </div>
+
+          <div>
+            <h2 class="text-xl mb-3">Third-Party Links</h2>
+            <p>Our website may contain links to third-party websites (such as Facebook or Google Maps). We are not responsible for the privacy practices of these external sites.</p>
+          </div>
+
+          <div>
+            <h2 class="text-xl mb-3">Children's Privacy</h2>
+            <p>Our services are not directed to children under 13, and we do not knowingly collect personal information from children.</p>
+          </div>
+
+          <div>
+            <h2 class="text-xl mb-3">Changes to This Policy</h2>
+            <p>We may update this privacy policy from time to time. Any changes will be posted on this page with an updated effective date.</p>
+          </div>
+
+          <div>
+            <h2 class="text-xl mb-3">Contact Us</h2>
+            <p>If you have questions about this privacy policy, please contact us:</p>
+            <ul class="list-none mt-2 space-y-1">
+              <li>Email: <a href="mailto:hello@galgonegreen.com">hello@galgonegreen.com</a></li>
+              <li>Phone: <a href="tel:+15712097745">(571) 209-7745</a></li>
+              <li>Address: 409 S Main Street, Broadway, VA 22815</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

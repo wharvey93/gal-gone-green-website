@@ -61,6 +61,7 @@ const serviceOptions = [
               action="https://formspree.io/f/placeholder"
               method="POST"
               class="space-y-5"
+              data-emails="will@harvey-capital.com,hello@galgonegreen.com"
             >
               <!-- Honeypot -->
               <div class="hidden" aria-hidden="true">
@@ -91,10 +92,11 @@ const serviceOptions = [
                     placeholder="you@email.com" />
                 </div>
                 <div>
-                  <label for="address" class="block text-sm font-medium text-charcoal mb-1.5">Address / City</label>
+                  <label for="address" class="block text-sm font-medium text-charcoal mb-1.5">Address</label>
+                  <!-- TODO: Connect Google Places Autocomplete API via Manus master key on production -->
                   <input type="text" id="address" name="address" autocomplete="street-address"
                     class="w-full px-4 py-3 rounded-xl border border-warm-300 bg-warm-50 text-charcoal placeholder-charcoal-muted focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-                    placeholder="Harrisonburg, VA" />
+                    placeholder="123 Main St, Harrisonburg, VA" />
                 </div>
               </div>
 

@@ -1,10 +1,10 @@
 ---
 import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import heroImg from '../assets/images/photos/living-room-1.jpg';
-import deepCleanImg from '../assets/images/photos/deep-clean.jpg';
-import commercialImg from '../assets/images/photos/janitorial.png';
-import airbnbImg from '../assets/images/photos/airbnb.png';
+import heroImg from '../assets/images/photos/hero-living-room.jpg';
+import deepCleanImg from '../assets/images/photos/cleaning-action.jpg';
+import commercialImg from '../assets/images/photos/hero-office.jpg';
+import airbnbImg from '../assets/images/photos/vacation-rental.jpg';
 
 const schema = {
   "@context": "https://schema.org",
@@ -83,9 +83,11 @@ const services = [
   },
 ];
 
+const yearsInBusiness = new Date().getFullYear() - 2011;
+
 const differentiators = [
   { icon: 'leaf', title: 'Safer Products', desc: 'Products that are safer for your family, your pets, and your home.' },
-  { icon: 'clock', title: '13+ Years Experience', desc: 'Serving the Shenandoah Valley with care and consistency since 2011.' },
+  { icon: 'clock', title: `${yearsInBusiness}+ Years Experience`, desc: 'Serving the Shenandoah Valley with care and consistency since 2011.' },
   { icon: 'refresh', title: 'Satisfaction Guarantee', desc: "Not satisfied? We'll re-clean within 24 hours at no extra charge." },
   { icon: 'tools', title: 'All Supplies Provided', desc: "We bring everything — you don't need to prepare a thing." },
   { icon: 'home', title: 'Locally Owned', desc: 'Not a franchise. Personal attention and accountability on every job.' },
@@ -242,16 +244,16 @@ const areas = [
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto relative">
-        <!-- Connecting line (desktop only) -->
-        <div class="hidden md:block absolute top-14 left-[16.67%] right-[16.67%] h-0.5 bg-green-200"></div>
+        <!-- Connecting line (desktop only) — centered through the step circles -->
+        <div class="hidden md:block absolute top-7 left-[calc(16.67%+28px)] right-[calc(16.67%+28px)] h-0.5 bg-green-200 z-0"></div>
 
         {[
-          { step: '1', title: 'Select Your Service', desc: 'Tell us about your space and what you need — residential, commercial, or a one-time deep clean.' },
-          { step: '2', title: 'Set Your Schedule', desc: 'Pick a date and time that works. Recurring or one-time, we work around your life.' },
-          { step: '3', title: 'We Clean, You Relax', desc: 'Our team arrives with everything needed. Come home to a space that feels brand new.' },
+          { step: '1', title: 'Tell Us About Your Space', desc: 'Fill out a quick form or give us a call. We\'ll ask about your home or business and recommend the right service.' },
+          { step: '2', title: 'Pick a Time That Works', desc: 'Choose a date and frequency — one-time, bi-weekly, or monthly. We build our schedule around yours.' },
+          { step: '3', title: 'Enjoy Your Clean Space', desc: 'Our team shows up with everything needed. Walk in to a home that feels like new — every single time.' },
         ].map((item, i) => (
           <div class="text-center reveal" style={`transition-delay: ${i * 150}ms`}>
-            <div class="w-14 h-14 rounded-full bg-green-600 text-white flex items-center justify-center text-xl font-bold font-[var(--font-heading)] mx-auto mb-5 relative z-10 shadow-lg shadow-green-600/20">
+            <div class="w-14 h-14 rounded-full bg-green-600 text-white flex items-center justify-center text-xl font-bold font-[var(--font-heading)] mx-auto mb-5 relative z-10 shadow-lg shadow-green-600/20 ring-4 ring-white">
               {item.step}
             </div>
             <h3 class="text-lg mb-2">{item.title}</h3>
@@ -279,9 +281,10 @@ const areas = [
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
         {[
-          { quote: "They are very thorough, polite and considerate. We couldn't be happier. Our home feels fresh every time they visit.", name: 'Sarah M.', location: 'Harrisonburg, VA', stars: 5 },
-          { quote: "We've used Gal Gone Green for our Airbnb turnovers and our guests consistently comment on how clean the place is. Five stars every time.", name: 'David R.', location: 'Massanutten, VA', stars: 5 },
-          { quote: "As a business owner, first impressions matter. Our offices have never looked better. Professional, reliable, and truly eco-conscious.", name: 'Karen T.', location: 'Bridgewater, VA', stars: 5 },
+          { quote: "We have been so impressed with the cleaning done by Gal Gone Green. They helped us out several times over the course of three different house moves, accommodating last minute schedule changes with no complaints, and did an amazing job at each location. Prices are super reasonable and their work is worth every penny!", name: 'Rachael H.', location: 'Facebook Review', stars: 5 },
+          /* TODO: Replace with real Google/Yelp reviews once collected */
+          { quote: "Your review could be here! We'd love to hear about your experience with Gal Gone Green.", name: 'Happy Customer', location: 'Shenandoah Valley', stars: 5 },
+          { quote: "Your review could be here! We'd love to hear about your experience with Gal Gone Green.", name: 'Happy Customer', location: 'Shenandoah Valley', stars: 5 },
         ].map((t, i) => (
           <div class="bg-white rounded-2xl p-8 shadow-sm card-hover reveal relative" style={`transition-delay: ${i * 100}ms`}>
             <svg class="w-10 h-10 text-green-200 absolute top-6 right-6" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" /></svg>
