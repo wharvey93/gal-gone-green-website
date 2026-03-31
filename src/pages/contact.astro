@@ -231,8 +231,8 @@ const serviceOptions = [
       });
 
       if (res.ok) {
-        form.style.display = 'none';
-        success!.classList.remove('hidden');
+        window.location.href = '/thank-you';
+        return;
       } else {
         // Fallback to mailto
         const name = formData.get('name');

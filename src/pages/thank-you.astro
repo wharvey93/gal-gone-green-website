@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Thank You | Gal Gone Green"
+  description="Thank you for contacting Gal Gone Green. We'll be in touch within 24 hours."
+  canonicalPath="/thank-you"
+>
+  <section class="min-h-[70vh] flex items-center section-padding bg-cream">
+    <div class="container">
+      <div class="max-w-xl mx-auto text-center reveal">
+        <div class="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-8">
+          <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+        </div>
+        <h1 class="mb-4">Thank You!</h1>
+        <p class="text-charcoal-light text-lg leading-relaxed mb-4">
+          We've received your request and will get back to you within 24 hours.
+        </p>
+        <p class="text-charcoal-light leading-relaxed mb-10">
+          In the meantime, if you need to reach us sooner, feel free to call or text us at
+          <a href="tel:+15712097745" class="text-green-700 font-medium hover:text-green-800">(571) 209-7745</a>.
+        </p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <a href="/" class="btn-primary">
+            Back to Home
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
+          </a>
+          <a href="/residential" class="btn-secondary">
+            Explore Our Services
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
