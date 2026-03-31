@@ -10,8 +10,8 @@ export default defineConfig({
   output: 'static',
 
   image: {
-    // Pre-optimize all images at build time (no server needed)
-    service: { entrypoint: 'astro/assets/services/sharp' },
+    // Use passthrough service — images are pre-optimized at build time
+    service: { entrypoint: 'astro/assets/services/noop' },
   },
 
   integrations: [sitemap()],
