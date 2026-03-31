@@ -43,8 +43,7 @@ const navLinks = [
     <button
       id="mobile-menu-btn"
       type="button"
-      class="lg:hidden"
-      style="display:flex;flex-direction:column;justify-content:center;align-items:center;width:44px;height:44px;gap:5px;border-radius:8px;flex-shrink:0;background:none;border:none;cursor:pointer;padding:0;margin-right:8px;"
+      style="flex-direction:column;justify-content:center;align-items:center;width:44px;height:44px;gap:5px;border-radius:8px;flex-shrink:0;background:none;border:none;cursor:pointer;padding:0;margin-right:8px;"
       aria-label="Toggle menu"
       aria-expanded="false"
     >
@@ -147,3 +146,14 @@ const navLinks = [
     }
   }, { passive: true });
 </script>
+
+<style>
+  #mobile-menu-btn {
+    display: flex;
+  }
+  @media (min-width: 1024px) {
+    #mobile-menu-btn {
+      display: none !important;
+    }
+  }
+</style>
