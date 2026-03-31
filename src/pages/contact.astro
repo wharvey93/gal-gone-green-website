@@ -82,6 +82,42 @@ const schema = {
 <link rel="stylesheet" href="https://d3ey4dbjkt2f6s.cloudfront.net/assets/external/work_request_embed.css" media="screen" />
 <script src="https://d3ey4dbjkt2f6s.cloudfront.net/assets/static_link/work_request_embed_snippet.js" clienthub_id="4377bb96-9218-44a1-a08d-28c4766d6af1-2722790" form_url="https://clienthub.getjobber.com/client_hubs/4377bb96-9218-44a1-a08d-28c4766d6af1/public/work_request/embedded_work_request_form?form_id=2722790"></script>
 
+<!-- Fix Jobber iframe clipping by adding extra height -->
+<script>
+  function fixJobberHeight() {
+    const container = document.getElementById('4377bb96-9218-44a1-a08d-28c4766d6af1-2722790');
+    if (!container) return;
+    const iframe = container.querySelector('iframe');
+    if (!iframe) return;
+
+    const observer = new MutationObserver(() => {
+      const currentHeight = parseInt(iframe.style.height, 10);
+      if (currentHeight > 0) {
+        iframe.style.setProperty('height', (currentHeight + 30) + 'px', 'important');
+      }
+    });
+
+    observer.observe(iframe, { attributes: true, attributeFilter: ['style'] });
+
+    // Also check on an interval for the first few seconds
+    let attempts = 0;
+    const interval = setInterval(() => {
+      const h = parseInt(iframe.style.height, 10);
+      if (h > 0) {
+        iframe.style.setProperty('height', (h + 30) + 'px', 'important');
+        clearInterval(interval);
+      }
+      if (++attempts > 20) clearInterval(interval);
+    }, 500);
+  }
+
+  if (document.readyState === 'complete') {
+    fixJobberHeight();
+  } else {
+    window.addEventListener('load', fixJobberHeight);
+  }
+</script>
+
 <style is:global>
   /* Clean up Jobber embed styling to match site */
   .jobber-work-request-form {
