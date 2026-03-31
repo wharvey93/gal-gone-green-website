@@ -9,9 +9,10 @@ interface Props {
   canonicalPath?: string;
   ogImage?: string;
   schema?: object;
+  noindex?: boolean;
 }
 
-const { title, description, canonicalPath = '', ogImage = '/images/og-default.jpg', schema } = Astro.props;
+const { title, description, canonicalPath = '', ogImage = '/images/og-default.jpg', schema, noindex = false } = Astro.props;
 const canonicalUrl = `https://galgonegreen.com${canonicalPath}`;
 ---
 
@@ -22,6 +23,7 @@ const canonicalUrl = `https://galgonegreen.com${canonicalPath}`;
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title}</title>
   <meta name="description" content={description} />
+  {noindex && <meta name="robots" content="noindex, nofollow" />}
   <link rel="canonical" href={canonicalUrl} />
 
   <!-- Favicon -->

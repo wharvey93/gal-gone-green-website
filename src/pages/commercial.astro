@@ -42,7 +42,7 @@ const schema = {
     <div class="container relative z-10">
       <div class="max-w-2xl">
         <p class="text-green-300 font-medium text-sm uppercase tracking-widest mb-4 reveal">Commercial Services</p>
-        <h1 class="text-white mb-6 reveal">A Clean Space Says Everything About Your Business</h1>
+        <h1 class="text-white mb-6 reveal">Commercial Cleaning Services in Harrisonburg &amp; the Shenandoah Valley</h1>
         <p class="text-green-100/80 text-lg leading-relaxed reveal">
           From offices to Airbnb turnovers to property transitions, we bring professional-grade cleaning with products that are safer for everyone.
         </p>
@@ -194,6 +194,35 @@ const schema = {
         <a href="/contact" class="btn-primary">
           Get a Commercial Quote
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Service Areas -->
+  <section class="section-padding bg-cream">
+    <div class="container text-center">
+      <div class="reveal mb-8">
+        <h2 class="mb-3">Areas We Serve</h2>
+        <p class="text-charcoal-light">We provide commercial cleaning across the Shenandoah Valley.</p>
+      </div>
+      <div class="flex flex-wrap justify-center gap-3 reveal">
+        {[
+          { name: 'Harrisonburg', slug: 'harrisonburg' },
+          { name: 'Broadway', slug: 'broadway' },
+          { name: 'Bridgewater', slug: 'bridgewater' },
+          { name: 'Staunton', slug: 'staunton' },
+          { name: 'Waynesboro', slug: 'waynesboro' },
+          { name: 'Massanutten', slug: 'massanutten' },
+          { name: 'Luray', slug: 'luray' },
+          { name: 'New Market', slug: 'new-market' },
+        ].map(area => (
+          <a href={`/areas/${area.slug}`} class="px-5 py-2.5 bg-green-50 hover:bg-green-100 text-green-700 text-sm font-medium rounded-full transition-colors">
+            {area.name}
+          </a>
+        ))}
+        <a href="/areas" class="px-5 py-2.5 border-2 border-green-500 text-green-700 hover:bg-green-50 text-sm font-medium rounded-full transition-colors">
+          View All Areas &rarr;
         </a>
       </div>
     </div>

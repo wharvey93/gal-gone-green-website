@@ -60,7 +60,7 @@ const faqSchema = {
     <div class="container relative z-10">
       <div class="max-w-2xl">
         <p class="text-green-300 font-medium text-sm uppercase tracking-widest mb-4 reveal">Residential Services</p>
-        <h1 class="text-white mb-6 reveal">Come Home to a Space That Feels Brand New</h1>
+        <h1 class="text-white mb-6 reveal">Residential Cleaning Services in Harrisonburg &amp; the Shenandoah Valley</h1>
         <p class="text-green-100/80 text-lg leading-relaxed reveal">
           Whether you need a one-time deep clean or regular upkeep, we bring the same care and thoroughness to every visit. Your home deserves it.
         </p>
@@ -237,6 +237,35 @@ const faqSchema = {
             </details>
           ))}
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Service Areas -->
+  <section class="section-padding bg-white">
+    <div class="container text-center">
+      <div class="reveal mb-8">
+        <h2 class="mb-3">Areas We Serve</h2>
+        <p class="text-charcoal-light">We provide residential cleaning across the Shenandoah Valley.</p>
+      </div>
+      <div class="flex flex-wrap justify-center gap-3 reveal">
+        {[
+          { name: 'Harrisonburg', slug: 'harrisonburg' },
+          { name: 'Broadway', slug: 'broadway' },
+          { name: 'Bridgewater', slug: 'bridgewater' },
+          { name: 'Dayton', slug: 'dayton' },
+          { name: 'Staunton', slug: 'staunton' },
+          { name: 'Elkton', slug: 'elkton' },
+          { name: 'Waynesboro', slug: 'waynesboro' },
+          { name: 'Massanutten', slug: 'massanutten' },
+        ].map(area => (
+          <a href={`/areas/${area.slug}`} class="px-5 py-2.5 bg-green-50 hover:bg-green-100 text-green-700 text-sm font-medium rounded-full transition-colors">
+            {area.name}
+          </a>
+        ))}
+        <a href="/areas" class="px-5 py-2.5 border-2 border-green-500 text-green-700 hover:bg-green-50 text-sm font-medium rounded-full transition-colors">
+          View All Areas &rarr;
+        </a>
       </div>
     </div>
   </section>
