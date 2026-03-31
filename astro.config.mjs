@@ -5,6 +5,11 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://galgonegreen.com',
+  output: 'static',
+  image: {
+    // Pre-optimize all images at build time (no server needed)
+    service: { entrypoint: 'astro/assets/services/sharp' },
+  },
   integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()],
