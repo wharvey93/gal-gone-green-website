@@ -274,35 +274,123 @@ const areas = [
   <!-- ===== TESTIMONIALS ===== -->
   <section class="section-padding bg-cream">
     <div class="container">
-      <div class="text-center max-w-2xl mx-auto mb-14 reveal">
+      <div class="text-center max-w-2xl mx-auto mb-10 reveal">
         <p class="text-green-600 font-medium text-sm uppercase tracking-widest mb-3">What People Say</p>
-        <h2>Trusted by Your Neighbors</h2>
+        <h2 class="mb-3">Trusted by Your Neighbors</h2>
+        <div class="flex items-center justify-center gap-2 text-sm text-charcoal-muted">
+          <div class="flex gap-0.5">
+            {Array(5).fill(null).map(() => (
+              <svg class="w-4 h-4 text-accent-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+            ))}
+          </div>
+          <span>5.0 on Google &middot; 8 Reviews</span>
+        </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-        {[
-          { quote: "We have been so impressed with the cleaning done by Gal Gone Green. They helped us out several times over the course of three different house moves, accommodating last minute schedule changes with no complaints, and did an amazing job at each location. Prices are super reasonable and their work is worth every penny!", name: 'Rachael H.', location: 'Facebook Review', stars: 5 },
-          /* TODO: Replace with real Google/Yelp reviews once collected */
-          { quote: "Your review could be here! We'd love to hear about your experience with Gal Gone Green.", name: 'Happy Customer', location: 'Shenandoah Valley', stars: 5 },
-          { quote: "Your review could be here! We'd love to hear about your experience with Gal Gone Green.", name: 'Happy Customer', location: 'Shenandoah Valley', stars: 5 },
-        ].map((t, i) => (
-          <div class="bg-white rounded-2xl p-8 shadow-sm card-hover reveal relative" style={`transition-delay: ${i * 100}ms`}>
-            <svg class="w-10 h-10 text-green-200 absolute top-6 right-6" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" /></svg>
-            <div class="flex gap-0.5 mb-4">
-              {Array(t.stars).fill(null).map(() => (
-                <svg class="w-5 h-5 text-accent-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-              ))}
+      <!-- Review carousel -->
+      <div class="relative max-w-5xl mx-auto reveal">
+        <div id="review-track" class="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 -mx-4 px-4" style="scrollbar-width: none; -ms-overflow-style: none;">
+          {[
+            { quote: "Cannot say enough good things... they leave things in perfect shape, and are so fast and such nice people!! I will continue to use them for a long time!", name: 'Lori Petrie', source: 'Google Review', stars: 5 },
+            { quote: "Very professional and friendly. My house smells great and furniture and floors are shiny. Bathrooms are fresh and clean.", name: 'Caroljean Kacho', source: 'Google Review', stars: 5 },
+            { quote: "Gal Gone Green cleans the office at my workplace, and they do a wonderful job each week. Desks are wiped, floors are cleaned, dishes put away, break room wiped down, bathrooms are spotless. They have been cleaning for us since 2021, and we have been very happy with their services.", name: 'Angie Lockard', source: 'Google Review', stars: 5 },
+            { quote: "I'm thankful that I am assigned the same cleaner each time. She knows me and my house and so we are able to communicate easily about what needs to be done. I love how my bathrooms sparkle, and the house and floors are green clean. I'm sensitive to chemicals, but I've never had a reaction to the products that are used.", name: 'Vicki Nolt', source: 'Google Review', stars: 5 },
+            { quote: "It was so wonderful to come home to such a clean home! I have four dogs that shed, and you could not even tell! Everything was dusted, mopped and straightened! Bathrooms were sparkling clean!", name: 'Carrie Streett', source: 'Google Review', stars: 5 },
+            { quote: "Gal Gone Green is an amazing eco-friendly cleaning company. I'm always in awe of how clean my house is after a cleaning. My space is spotless, and the air felt noticeably fresher without the usual harsh chemical smells. The team is on time, professional, and genuinely invested in their work.", name: 'Phil Ernst', source: 'Google Review', stars: 5 },
+            { quote: "Very efficient, dependable, and trustworthy are the words that come to my mind when I think of Gal Gone Green. I can not say enough good things about their work. Gal Gone Green has been cleaning for me since October 2023. I highly recommend them!", name: 'Debbi Long', source: 'Google Review', stars: 5 },
+            { quote: "We have been so impressed with the cleaning done by Gal Gone Green. They helped us out several times over the course of three different house moves, accommodating last minute schedule changes with no complaints, and did an amazing job at each location. Prices are super reasonable and their work is worth every penny!", name: 'Rachael Harnish', source: 'Facebook Review', stars: 5 },
+          ].map((t, i) => (
+            <div class="bg-white rounded-2xl p-7 shadow-sm flex-shrink-0 w-[320px] md:w-[380px] snap-start relative flex flex-col">
+              <svg class="w-8 h-8 text-green-100 absolute top-5 right-5" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" /></svg>
+              <div class="flex gap-0.5 mb-3">
+                {Array(t.stars).fill(null).map(() => (
+                  <svg class="w-4 h-4 text-accent-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                ))}
+              </div>
+              <p class="text-charcoal-light text-sm leading-relaxed mb-5 flex-1 italic">"{t.quote}"</p>
+              <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-semibold text-xs">
+                  {t.name.split(' ').map(n => n[0]).join('')}
+                </div>
+                <div>
+                  <p class="font-semibold text-sm text-charcoal">{t.name}</p>
+                  <p class="text-charcoal-muted text-xs flex items-center gap-1">
+                    {t.source === 'Google Review' && <svg class="w-3 h-3" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>}
+                    {t.source}
+                  </p>
+                </div>
+              </div>
             </div>
-            <p class="text-charcoal-light text-sm leading-relaxed mb-6 italic">"{t.quote}"</p>
-            <div>
-              <p class="font-semibold text-sm text-charcoal">{t.name}</p>
-              <p class="text-charcoal-muted text-xs">{t.location}</p>
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
+
+        <!-- Navigation arrows -->
+        <button id="review-prev" type="button" class="hidden md:flex absolute -left-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white shadow-md items-center justify-center text-green-700 hover:bg-green-50 transition-colors z-10" aria-label="Previous reviews">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+        </button>
+        <button id="review-next" type="button" class="hidden md:flex absolute -right-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white shadow-md items-center justify-center text-green-700 hover:bg-green-50 transition-colors z-10" aria-label="Next reviews">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+        </button>
+
+        <!-- Dot indicators -->
+        <div class="flex justify-center gap-2 mt-6">
+          {Array(8).fill(null).map((_, i) => (
+            <button class="review-dot w-2 h-2 rounded-full bg-green-300 transition-all" data-index={i} aria-label={`Go to review ${i + 1}`}></button>
+          ))}
+        </div>
       </div>
     </div>
   </section>
+
+  <script>
+    const track = document.getElementById('review-track');
+    const prevBtn = document.getElementById('review-prev');
+    const nextBtn = document.getElementById('review-next');
+    const dots = document.querySelectorAll('.review-dot');
+    const cardWidth = 396; // 380 + 16 gap
+
+    function updateDots() {
+      if (!track) return;
+      const scrollLeft = track.scrollLeft;
+      const index = Math.round(scrollLeft / cardWidth);
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('bg-green-600', i === index);
+        dot.classList.toggle('bg-green-300', i !== index);
+        dot.classList.toggle('w-4', i === index);
+        dot.classList.toggle('w-2', i !== index);
+      });
+    }
+
+    prevBtn?.addEventListener('click', () => {
+      track?.scrollBy({ left: -cardWidth, behavior: 'smooth' });
+    });
+    nextBtn?.addEventListener('click', () => {
+      track?.scrollBy({ left: cardWidth, behavior: 'smooth' });
+    });
+    dots.forEach(dot => {
+      dot.addEventListener('click', () => {
+        const index = Number(dot.dataset.index);
+        track?.scrollTo({ left: index * cardWidth, behavior: 'smooth' });
+      });
+    });
+    track?.addEventListener('scroll', updateDots, { passive: true });
+    updateDots();
+
+    // Auto-advance every 5 seconds
+    let autoplay = setInterval(() => {
+      if (!track) return;
+      const maxScroll = track.scrollWidth - track.clientWidth;
+      if (track.scrollLeft >= maxScroll - 10) {
+        track.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        track.scrollBy({ left: cardWidth, behavior: 'smooth' });
+      }
+    }, 5000);
+
+    // Pause autoplay on hover/touch
+    track?.addEventListener('mouseenter', () => clearInterval(autoplay));
+    track?.addEventListener('touchstart', () => clearInterval(autoplay), { passive: true });
+  </script>
 
   <!-- ===== SERVICE AREA ===== -->
   <section class="section-padding bg-green-800 text-white relative grain overflow-hidden">
