@@ -87,13 +87,15 @@ const schema = {
   .jobber-work-request-form {
     font-family: var(--font-body) !important;
   }
-  /* Remove Jobber's oversized container and excess whitespace */
+  /* Give the Jobber iframe extra breathing room so the border isn't clipped */
   #4377bb96-9218-44a1-a08d-28c4766d6af1-2722790 iframe {
-    min-height: 0 !important;
+    height: auto !important;
+    min-height: 500px !important;
+    padding-bottom: 20px !important;
   }
   #4377bb96-9218-44a1-a08d-28c4766d6af1-2722790 {
-    min-height: 0 !important;
     overflow: visible !important;
+    padding-bottom: 10px;
   }
   /* Let the Jobber embed box breathe without the grey border box */
   .work-request-embedded-wrapper,
@@ -102,6 +104,6 @@ const schema = {
     border: none !important;
     box-shadow: none !important;
     padding: 0 !important;
-    min-height: auto !important;
+    overflow: visible !important;
   }
 </style>
