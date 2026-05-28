@@ -1,0 +1,11 @@
+# Copy this file to .dev.vars for local dev (gitignored).
+# Production values live in Cloudflare Pages → Settings → Environment Variables.
+
+JOBBER_CLIENT_ID=
+JOBBER_CLIENT_SECRET=
+JOBBER_REFRESH_TOKEN=
+RESEND_API_KEY=
+
+# Optional overrides:
+# FALLBACK_EMAIL=hello@galgonegreen.com
+# FALLBACK_FROM_EMAIL=Gal Gone Green <onboarding@resend.dev>

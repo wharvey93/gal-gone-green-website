@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import QuoteCalculator from '../components/QuoteCalculator.tsx';
+const googleMapsKey = import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY;
+---
+<BaseLayout
+  title="Get Your Instant Quote | Gal Gone Green"
+  description="Eco-friendly cleaning across the Shenandoah Valley. Enter your home details and see your flat-rate price in under 60 seconds."
+  canonicalPath="/quote"
+>
+  <div class="min-h-screen py-10 px-4" style="background:#faf8f4">
+    <div class="max-w-2xl mx-auto">
+      <h1 class="font-['DM_Serif_Display'] text-3xl md:text-5xl text-[#2c2c2c] mb-3">
+        Get your instant quote
+      </h1>
+      <p class="text-base md:text-lg text-[#555] mb-2">
+        Eco-friendly cleaning across the Shenandoah Valley since 2011. Tell us about your home or business and we'll show you a flat price — no hourly surprises.
+      </p>
+      <p class="text-sm text-[#777] mb-8">
+        15 years in the Valley · Bonded, insured, background-checked · Flat-rate · Eco-friendly products
+      </p>
+      <QuoteCalculator client:load submitMode="live" phone="(571) 209-7745" googleMapsApiKey={googleMapsKey} />
+    </div>
+  </div>
+</BaseLayout>

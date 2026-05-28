@@ -1,0 +1,21 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "shy-credit-5906",
+  "main": "./src/worker.ts",
+  "compatibility_date": "2025-04-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page"
+  },
+  "observability": {
+    "enabled": true
+  },
+  "triggers": {
+    // Daily health check at 10:00 UTC = 6am ET (standard time) / 6am EDT
+    // (daylight). Cloudflare cron runs on UTC only, so spring/fall DST will
+    // shift the local trigger by an hour. Good enough for a "morning" check.
+    "crons": ["0 10 * * *"]
+  }
+}

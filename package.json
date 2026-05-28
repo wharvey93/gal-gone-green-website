@@ -11,17 +11,22 @@
     "preview": "npm run build && wrangler dev",
     "start": "node server.js",
     "astro": "astro",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "generate-types": "wrangler types",
     "deploy": "npm run build && wrangler deploy"
   },
   "dependencies": {
+    "@astrojs/preact": "^5.1.1",
     "@astrojs/sitemap": "^3.7.2",
     "@tailwindcss/vite": "^4.2.2",
     "astro": "^6.1.1",
     "express": "^4.22.1",
+    "preact": "^10.29.1",
     "tailwindcss": "^4.2.2"
   },
   "devDependencies": {
+    "vitest": "^4.1.4",
     "wrangler": "^4.79.0"
   },
   "overrides": {

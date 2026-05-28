@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Quote Received | Gal Gone Green"
+  description="Thanks for requesting a quote from Gal Gone Green. We'll send your official quote within 2 business hours."
+  canonicalPath="/thank-you-quote"
+  noindex={true}
+>
+  <section class="min-h-[70vh] flex items-center py-16 px-4" style="background:#faf8f4">
+    <div class="max-w-xl mx-auto text-center">
+      <div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-8" style="background:#e6f0e6">
+        <svg class="w-10 h-10" fill="none" stroke="#3a7a3a" viewBox="0 0 24 24" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
+      </div>
+      <h1 class="font-['DM_Serif_Display'] text-3xl md:text-5xl text-[#2c2c2c] mb-4" id="headline">
+        Your quote is on its way
+      </h1>
+      <p class="text-[#555] text-lg leading-relaxed mb-4" id="subtext">
+        Thanks! Wilkins will review your submission and send your official quote within 2 business hours (Mon–Fri, 8am–5pm ET). It comes from Jobber — check your inbox and spam folder.
+      </p>
+      <p class="text-sm text-[#777] leading-relaxed mb-10">
+        Need us sooner? Call or text <a href="tel:+15712097745" class="font-medium text-[#3a7a3a] hover:underline">(571) 209-7745</a>.
+      </p>
+      <div class="flex justify-center">
+        <a href="/" class="px-5 py-3 rounded-md font-semibold text-white" style="background:#4a8c4a">
+          Back to home
+        </a>
+      </div>
+
+      <!-- GA4 + Google Ads conversion hook:
+           if you add gtag.js to BaseLayout, you can fire on this page load -->
+      <script is:inline>
+        (function () {
+          var params = new URLSearchParams(window.location.search);
+          if (params.get('type') === 'assessment') {
+            document.getElementById('headline').textContent = "We've got your details";
+            document.getElementById('subtext').textContent =
+              "Because of what you flagged, we'd like a quick 15-minute on-site look. Wilkins will call within 2 business hours to schedule — usually free.";
+          }
+          if (typeof window.plausible === 'function') {
+            window.plausible('QuoteSubmitted', {
+              props: {
+                service: params.get('svc') || 'unknown',
+                price: params.get('price') || 'assessment',
+              },
+            });
+          }
+        })();
+      </script>
+    </div>
+  </section>
+</BaseLayout>

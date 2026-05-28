@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
+import preact from '@astrojs/preact';
 
 export default defineConfig({
   site: 'https://galgonegreen.com',
@@ -9,7 +10,12 @@ export default defineConfig({
   image: {
     service: { entrypoint: 'astro/assets/services/noop' },
   },
-  integrations: [sitemap()],
+  integrations: [
+    preact(),
+    sitemap({
+      filter: (page) => !page.includes('/quote-preview'),
+    }),
+  ],
   vite: {
     plugins: [tailwindcss()],
   },

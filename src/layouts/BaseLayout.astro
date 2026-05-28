@@ -64,6 +64,15 @@ const canonicalUrl = `https://galgonegreen.com${canonicalPath}`;
     })(window, document, "clarity", "script", "wfmxdl7bgt");
   </script>
 
+  <!-- Google tag (gtag.js) -->
+  <script async is:inline src="https://www.googletagmanager.com/gtag/js?id=AW-16751447114"></script>
+  <script is:inline>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'AW-16751447114');
+  </script>
+
   <!-- JSON-LD Schema -->
   {schema && (
     <script type="application/ld+json" set:html={JSON.stringify(schema)} />

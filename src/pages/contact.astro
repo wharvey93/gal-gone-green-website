@@ -21,89 +21,53 @@ const schema = {
 ---
 
 <BaseLayout
-  title="Book a Cleaning in Harrisonburg, VA | Gal Gone Green"
-  description="Get in touch with Gal Gone Green. Tell us about your cleaning needs and we'll reach out to learn more. Serving Harrisonburg, Broadway, and the Shenandoah Valley."
+  title="Contact Us | Gal Gone Green"
+  description="Get in touch with Gal Gone Green — call or text (571) 209-7745 or email hello@galgonegreen.com. Eco-friendly cleaning across the Shenandoah Valley."
   canonicalPath="/contact"
   schema={schema}
 >
   <!-- Hero -->
   <section class="py-14 md:py-18 bg-green-800 relative grain">
     <div class="container relative z-10 text-center">
-      <p class="text-green-300 font-medium text-sm uppercase tracking-widest mb-3 reveal">Get Started</p>
-      <h1 class="text-white mb-4 reveal">Get in Touch</h1>
+      <p class="text-green-300 font-medium text-sm uppercase tracking-widest mb-3 reveal">Contact Us</p>
+      <h1 class="text-white mb-4 reveal">How to Reach Us</h1>
       <p class="text-green-100/80 text-lg leading-relaxed max-w-2xl mx-auto reveal">
-        Tell us a little about what you're looking for and we'll reach out to learn more. No commitment, no pressure.
+        Call, text, or email — whichever's easiest.
       </p>
     </div>
   </section>
 
-  <!-- Form + Contact Info -->
+  <!-- Contact methods -->
   <section class="section-padding bg-cream">
-    <div class="container max-w-4xl">
-      <!-- Jobber Form -->
-      <div class="reveal">
-        <div id="4377bb96-9218-44a1-a08d-28c4766d6af1-2722790"></div>
+    <div class="container max-w-3xl">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 reveal">
+        <a href="tel:+15712097745" class="flex flex-col items-center text-center p-8 bg-white rounded-2xl shadow-sm card-hover group">
+          <div class="w-14 h-14 rounded-xl bg-green-100 flex items-center justify-center mb-4 group-hover:bg-green-200 transition-colors">
+            <svg class="w-7 h-7 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+          </div>
+          <p class="font-semibold text-charcoal text-lg mb-1">Call or Text</p>
+          <p class="text-green-700 text-xl font-medium">(571) 209-7745</p>
+          <p class="text-charcoal-muted text-sm mt-2">Mon–Fri, 8am–5pm ET</p>
+        </a>
+
+        <a href="mailto:hello@galgonegreen.com" class="flex flex-col items-center text-center p-8 bg-white rounded-2xl shadow-sm card-hover group">
+          <div class="w-14 h-14 rounded-xl bg-green-100 flex items-center justify-center mb-4 group-hover:bg-green-200 transition-colors">
+            <svg class="w-7 h-7 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+          </div>
+          <p class="font-semibold text-charcoal text-lg mb-1">Email</p>
+          <p class="text-green-700 text-xl font-medium break-all">hello@galgonegreen.com</p>
+          <p class="text-charcoal-muted text-sm mt-2">We reply within a business day</p>
+        </a>
       </div>
 
-      <!-- Contact alternatives -->
-      <div class="mt-16 pt-12 border-t border-warm-300 reveal">
-        <p class="text-center text-charcoal-muted text-sm mb-8">Prefer to reach us directly?</p>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          <a href="tel:+15712097745" class="flex flex-col items-center text-center p-6 bg-white rounded-2xl shadow-sm card-hover group">
-            <div class="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center mb-3 group-hover:bg-green-200 transition-colors">
-              <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
-            </div>
-            <p class="font-semibold text-charcoal text-sm mb-0.5">Call or Text</p>
-            <p class="text-charcoal-light text-sm">(571) 209-7745</p>
-          </a>
-
-          <a href="mailto:hello@galgonegreen.com" class="flex flex-col items-center text-center p-6 bg-white rounded-2xl shadow-sm card-hover group">
-            <div class="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center mb-3 group-hover:bg-green-200 transition-colors">
-              <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-            </div>
-            <p class="font-semibold text-charcoal text-sm mb-0.5">Email</p>
-            <p class="text-charcoal-light text-sm">hello@galgonegreen.com</p>
-          </a>
-
-          <a href="https://maps.google.com/?q=409+S+Main+Street+Broadway+VA+22815" target="_blank" rel="noopener noreferrer" class="flex flex-col items-center text-center p-6 bg-white rounded-2xl shadow-sm card-hover group">
-            <div class="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center mb-3 group-hover:bg-green-200 transition-colors">
-              <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-            </div>
-            <p class="font-semibold text-charcoal text-sm mb-0.5">Visit Us</p>
-            <p class="text-charcoal-light text-sm">409 S Main St, Broadway, VA</p>
-          </a>
-        </div>
+      <!-- Gentle redirect for lead seekers -->
+      <div class="mt-12 text-center reveal">
+        <p class="text-charcoal-muted text-sm mb-4">Looking for a price?</p>
+        <a href="/quote" class="btn-primary text-lg">
+          Get Your Instant Quote
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+        </a>
       </div>
     </div>
   </section>
 </BaseLayout>
-
-<!-- Jobber embed -->
-<link rel="stylesheet" href="https://d3ey4dbjkt2f6s.cloudfront.net/assets/external/work_request_embed.css" media="screen" />
-<script src="https://d3ey4dbjkt2f6s.cloudfront.net/assets/static_link/work_request_embed_snippet.js" clienthub_id="4377bb96-9218-44a1-a08d-28c4766d6af1-2722790" form_url="https://clienthub.getjobber.com/client_hubs/4377bb96-9218-44a1-a08d-28c4766d6af1/public/work_request/embedded_work_request_form?form_id=2722790"></script>
-
-<style is:global>
-  /* Clean up Jobber embed styling to match site */
-  .jobber-work-request-form {
-    font-family: var(--font-body) !important;
-  }
-  /* Give the Jobber iframe extra breathing room so the border isn't clipped */
-  #4377bb96-9218-44a1-a08d-28c4766d6af1-2722790 iframe {
-    height: auto !important;
-    min-height: 500px !important;
-    padding-bottom: 20px !important;
-  }
-  #4377bb96-9218-44a1-a08d-28c4766d6af1-2722790 {
-    overflow: visible !important;
-    padding-bottom: 10px;
-  }
-  /* Let the Jobber embed box breathe without the grey border box */
-  .work-request-embedded-wrapper,
-  .work-request-embed {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-    overflow: visible !important;
-  }
-</style>
