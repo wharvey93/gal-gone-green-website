@@ -33,7 +33,6 @@ export interface PromoResult {
 
 export const PROMO_CODES: Record<string, PromoDefinition> = {
   HELLO10: { label: '10% off your first recurring clean', piece: 'postcard' },
-  FLYER10: { label: '10% off your first recurring clean', piece: 'flyer' },
   NEIGHBOR10: { label: '10% off your first recurring clean', piece: 'door-hanger' },
 };
 
