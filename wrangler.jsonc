@@ -9,6 +9,12 @@
     "binding": "ASSETS",
     "not_found_handling": "404-page"
   },
+  // Non-sensitive notification config — recipients + from-address for the
+  // quote-submission alert. Jobber/Resend API keys stay as Worker secrets.
+  "vars": {
+    "NOTIFY_EMAILS": "will@harvey-capital.com,hello@galgonegreen.com",
+    "NOTIFY_FROM_EMAIL": "Gal Gone Green <noreply@galgonegreen.com>"
+  },
   "observability": {
     "enabled": true
   },

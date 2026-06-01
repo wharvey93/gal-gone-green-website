@@ -1048,7 +1048,7 @@ export default function QuoteCalculator({
           type="text"
           class={`${inputClass} max-w-xs uppercase tracking-wide`}
           value={s.promoCode}
-          placeholder="e.g. HELLO10"
+          placeholder="Enter your code"
           autoComplete="off"
           spellcheck={false}
           maxLength={20}
@@ -1068,7 +1068,7 @@ export default function QuoteCalculator({
           </p>
         )}
         {promoBlurred && !promo.isEmpty && !promo.valid && (
-          <p class="text-sm mt-2 text-[#777]">Code not recognized. We can still send you a quote.</p>
+          <p class="text-sm mt-2 text-red-600">Code not recognized. We can still send you a quote.</p>
         )}
       </section>
 
