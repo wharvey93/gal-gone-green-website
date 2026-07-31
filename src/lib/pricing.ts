@@ -111,12 +111,21 @@ export type QuoteInputs =
   | CommercialInputs;
 
 export interface QuoteResult {
+  // Total the customer pays = basePrice + travelSurcharge.
   price: number | null;
+  // The public base rate for the clean itself, BEFORE any travel surcharge.
+  // The travel surcharge is always shown as its own line item and never folded
+  // silently into the base — the published form rates have to hold, or the
+  // quote reads as a bait-and-switch. See feedback_ggg_honor_form_price.
+  basePrice: number | null;
   hours: number | null;
   // First clean (1.5x) — only populated for residential-recurring. This is the
   // price a brand-new recurring customer pays for their first cleaning; all
   // subsequent cleanings are at the recurring `price` above.
   firstCleanPrice: number | null;
+  // First clean before travel surcharge — the line-item counterpart to
+  // `basePrice` for the 1.5x first clean.
+  baseFirstCleanPrice: number | null;
   isOutlier: boolean;
   outlierReason: string | null;
   isOutOfArea: boolean;
@@ -197,13 +206,26 @@ const STR_PRICES: Record<1 | 2 | 3 | 4, number> = {
   4: 250,
 };
 
+// ----- Service area rings -----
+//
+// SOURCE OF TRUTH. These two sets are the only ring definitions that exist
+// anywhere — the EA repo references "Ring 1" / "Ring 2" per-client in ops
+// notes but has never held a consolidated list. Built from USPS ZIP-by-county
+// data for Rockingham County (all ZIPs) + close-in Shenandoah, Page, and
+// Augusta towns within ~30 min of the Broadway home base.
+//
+// Cross-checked against every ring designation recorded in the EA ops notes,
+// and all six agree with this table: Broadway 22815 and Linville 22834 = Ring
+// 1; Staunton 24401, Waynesboro 22980, Stuarts Draft 24477 and Front Royal
+// 22630 = Ring 2.
+
 // Ring 1 — standard pricing, no surcharge. ~30 min or less from Broadway.
-// Sourced from authoritative USPS ZIP-by-county data for Rockingham County
-// (all ZIPs) + close-in Shenandoah, Page, and Augusta towns within 30 min.
 export const RING_1_ZIPS = new Set<string>([
   // Rockingham County (entire county — home base)
   '22801', // Harrisonburg
   '22802', // Harrisonburg
+  '22803', // Harrisonburg (PO boxes)
+  '22807', // Harrisonburg — JMU campus (student move-outs are a live segment)
   '22811', // Bergton
   '22812', // Bridgewater
   '22815', // Broadway
@@ -344,6 +366,16 @@ function expectedBathrooms(sqft: SquareFootageBucket): number {
   }
 }
 
+/**
+ * True when the value is a complete 5-digit US ZIP. The quote calculator only
+ * feeds a ZIP into `calculate` once it is complete, so a half-typed "229" does
+ * not flash "outside our service area" at the customer mid-keystroke. The
+ * server reuses this so client and server agree on what counts as a ZIP.
+ */
+export function isCompleteZip(zip: string | undefined | null): boolean {
+  return /^\d{5}$/.test((zip ?? '').trim());
+}
+
 function checkZip(zip: string | undefined): {
   isOutOfArea: boolean;
   travelSurchargeApplied: boolean;
@@ -388,8 +420,10 @@ function clampStrBedroom(n: number): 1 | 2 | 3 | 4 {
 function outOfAreaResult(): QuoteResult {
   return {
     price: null,
+    basePrice: null,
     hours: null,
     firstCleanPrice: null,
+    baseFirstCleanPrice: null,
     isOutlier: false,
     outlierReason: null,
     isOutOfArea: true,
@@ -406,8 +440,10 @@ function outlierResult(
 ): QuoteResult {
   return {
     price: null,
+    basePrice: null,
     hours: null,
     firstCleanPrice: null,
+    baseFirstCleanPrice: null,
     isOutlier: true,
     outlierReason: reason,
     isOutOfArea: false,
@@ -431,8 +467,10 @@ function calcResidentialRecurring(
   if (!freq) {
     return {
       price: null,
+      basePrice: null,
       hours: null,
       firstCleanPrice: null,
+      baseFirstCleanPrice: null,
       isOutlier: false,
       outlierReason: null,
       isOutOfArea: false,
@@ -465,8 +503,10 @@ function calcResidentialRecurring(
 
   return {
     price,
+    basePrice: recurringPrePrice,
     hours,
     firstCleanPrice,
+    baseFirstCleanPrice: firstCleanPreTravel,
     isOutlier: false,
     outlierReason: null,
     isOutOfArea: false,
@@ -494,14 +534,16 @@ function calcDeepClean(
   const adjustedHrs = base + bathAdj + petAdj + basementAdj + livingAdj;
   const hours = roundToNearest(adjustedHrs * DEEP_CLEAN_MULTIPLIER, 0.25);
 
-  let price = roundToNearest(hours * DEEP_CLEAN_RATE, 5);
-  price = Math.max(price, DEEP_CLEAN_MIN);
-  price += travelSurcharge;
+  let basePrice = roundToNearest(hours * DEEP_CLEAN_RATE, 5);
+  basePrice = Math.max(basePrice, DEEP_CLEAN_MIN);
+  const price = basePrice + travelSurcharge;
 
   return {
     price,
+    basePrice,
     hours,
     firstCleanPrice: null,
+    baseFirstCleanPrice: null,
     isOutlier: false,
     outlierReason: null,
     isOutOfArea: false,
@@ -531,12 +573,15 @@ function calcMove(
   if (a.carpetRooms && a.carpetRooms > 0) addons += a.carpetRooms * 40;
   if (a.insideAppliances) addons += 50;
 
-  const price = base + addons + travelSurcharge;
+  const basePrice = base + addons;
+  const price = basePrice + travelSurcharge;
 
   return {
     price,
+    basePrice,
     hours: null,
     firstCleanPrice: null,
+    baseFirstCleanPrice: null,
     isOutlier: false,
     outlierReason: null,
     isOutOfArea: false,
@@ -561,12 +606,15 @@ function calcStr(
   if (a.hotTub) addons += 35;
   if (a.outdoor) addons += 30;
 
-  const price = base + addons + travelSurcharge;
+  const basePrice = base + addons;
+  const price = basePrice + travelSurcharge;
 
   return {
     price,
+    basePrice,
     hours: null,
     firstCleanPrice: null,
+    baseFirstCleanPrice: null,
     isOutlier: false,
     outlierReason: null,
     isOutOfArea: false,
@@ -592,14 +640,16 @@ function calcCommercial(
 
   const hours = roundToNearest((base + restroomAdj + breakroomAdj) * facMult * freqMult, 0.25);
 
-  let price = roundToNearest(hours * COMMERCIAL_RATE, 5);
-  price = Math.max(price, COMMERCIAL_MIN);
-  price += travelSurcharge;
+  let basePrice = roundToNearest(hours * COMMERCIAL_RATE, 5);
+  basePrice = Math.max(basePrice, COMMERCIAL_MIN);
+  const price = basePrice + travelSurcharge;
 
   return {
     price,
+    basePrice,
     hours,
     firstCleanPrice: null,
+    baseFirstCleanPrice: null,
     isOutlier: false,
     outlierReason: null,
     isOutOfArea: false,
