@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import {
   calculate,
+  isCompleteZip,
   type CommercialFrequency,
   type CommercialSqftBucket,
   type FacilityType,
@@ -110,7 +111,10 @@ const initial: UIState = {
 };
 
 function toInputs(s: UIState): QuoteInputs {
-  const zip = s.zip.trim() || undefined;
+  // Only price against a COMPLETE ZIP. A partial entry must not be treated as
+  // "no ZIP" (which silently drops the Ring 2 travel surcharge) nor as an
+  // unknown ZIP (which would flash "outside our service area" while typing).
+  const zip = isCompleteZip(s.zip) ? s.zip.trim() : undefined;
   switch (s.serviceType) {
     case 'residential-recurring':
       return {
@@ -431,6 +435,13 @@ export default function QuoteCalculator({
   // When user types in the address field directly, clear any stale structured
   // fields so we don't send a mismatch on submit (e.g. they edit the street
   // after picking a suggestion).
+  //
+  // ZIP is deliberately NOT cleared here. It has its own required, visible
+  // field that the customer owns, and wiping it on every keystroke in the
+  // address box is what produced under-priced quotes: autocomplete was the
+  // only thing that ever set it, so anyone who typed their address freely got
+  // no ZIP and therefore no Ring 2 travel surcharge. Picking a suggestion
+  // still overwrites the ZIP with the authoritative one for that address.
   function handleAddressInput(value: string) {
     setS((p) => ({
       ...p,
@@ -438,7 +449,6 @@ export default function QuoteCalculator({
       propertyStreet: '',
       propertyCity: '',
       propertyState: '',
-      zip: '',
     }));
   }
 
@@ -449,7 +459,11 @@ export default function QuoteCalculator({
   const isMove = s.serviceType === 'move-out' || s.serviceType === 'move-in';
 
   const contactComplete =
-    s.name.trim() && phoneIsComplete(s.phone) && /.+@.+\..+/.test(s.email) && s.propertyAddress.trim();
+    s.name.trim() &&
+    phoneIsComplete(s.phone) &&
+    /.+@.+\..+/.test(s.email) &&
+    s.propertyAddress.trim() &&
+    isCompleteZip(s.zip);
 
   async function handleSubmit() {
     if (submitState === 'loading') return;
@@ -460,11 +474,14 @@ export default function QuoteCalculator({
     const payload = {
       // calculated
       calculatedPrice: result.price,
+      basePrice: result.basePrice,
       firstCleanPrice: result.firstCleanPrice,
+      baseFirstCleanPrice: result.baseFirstCleanPrice,
       isOutlier: result.isOutlier,
       outlierReason: result.outlierReason,
       isOutOfArea: result.isOutOfArea,
       travelSurchargeApplied: result.travelSurchargeApplied,
+      travelSurcharge: result.travelSurcharge,
       // service
       serviceType: s.serviceType,
       frequency: s.serviceType === 'residential-recurring' ? s.frequency : undefined,
@@ -1004,11 +1021,43 @@ export default function QuoteCalculator({
               )}
             </div>
             <p class="text-xs text-[#777] mt-1">
-              {!s.zip && googleMapsApiKey && 'Pick your address from the dropdown to confirm your area.'}
-              {!s.zip && !googleMapsApiKey && 'We serve the Shenandoah Valley from Winchester to Lexington.'}
-              {s.zip && result.travelSurchargeApplied && '+$25 travel surcharge (outer Valley).'}
-              {s.zip && !result.travelSurchargeApplied && !result.isOutOfArea && '✓ In our core service area.'}
-              {result.isOutOfArea && "Outside our service area — we'll still review your submission."}
+              {googleMapsApiKey
+                ? 'Pick your address from the dropdown and we\'ll fill in your ZIP.'
+                : 'We serve the Shenandoah Valley from Winchester to Lexington.'}
+            </p>
+          </div>
+          <div>
+            <label class={labelClass}>ZIP code<span class="text-[#c47f34]"> *</span></label>
+            <input
+              type="text"
+              inputMode="numeric"
+              autoComplete="postal-code"
+              maxLength={5}
+              class={`${inputClass} max-w-[10rem]`}
+              value={s.zip}
+              placeholder="22815"
+              aria-label="Property ZIP code"
+              onInput={(e) =>
+                update({
+                  zip: (e.currentTarget as HTMLInputElement).value.replace(/\D/g, '').slice(0, 5),
+                })
+              }
+            />
+            <p class="text-xs mt-1">
+              {!isCompleteZip(s.zip) && (
+                <span class="text-[#777]">Sets your travel pricing — 5 digits.</span>
+              )}
+              {isCompleteZip(s.zip) && result.isOutOfArea && (
+                <span class="text-[#777]">
+                  Outside our service area — we'll still review your submission.
+                </span>
+              )}
+              {isCompleteZip(s.zip) && !result.isOutOfArea && result.travelSurchargeApplied && (
+                <span class="text-[#777]">Outer Valley — adds a $25 travel charge per visit.</span>
+              )}
+              {isCompleteZip(s.zip) && !result.isOutOfArea && !result.travelSurchargeApplied && (
+                <span style={`color:${SAGE}`}>✓ In our core service area — no travel charge.</span>
+              )}
             </p>
           </div>
           <div>
@@ -1122,7 +1171,7 @@ export default function QuoteCalculator({
                 {submitState === 'loading' ? 'Submitting…' : result.isOutlier ? 'Request assessment' : 'Book this price'}
               </button>
               {submitState !== 'loading' && !contactComplete && (
-                <span class="text-xs text-[#777]">Fill name, phone, email, address</span>
+                <span class="text-xs text-[#777]">Fill name, phone, email, address, ZIP</span>
               )}
               {submitState === 'error' && (
                 <span class="text-xs text-red-700 max-w-[200px] text-right">
@@ -1179,14 +1228,24 @@ function PriceDisplay(props: {
         ${result.price}
         <span class="text-sm font-normal text-[#777] ml-2">{perLabel}</span>
       </div>
+      {/* Travel surcharge is itemised, never folded into the headline base
+          rate — the published form price has to stay recognisable. */}
+      {result.travelSurchargeApplied && (
+        <div class="text-xs text-[#555] mt-0.5">
+          Cleaning <strong class="text-[#2c2c2c]">${result.basePrice}</strong>
+          <span class="text-[#777]"> + travel to your area </span>
+          <strong class="text-[#2c2c2c]">${result.travelSurcharge}</strong>
+        </div>
+      )}
       {isRecurring && result.firstCleanPrice && (
         <div class="text-xs text-[#555] mt-0.5">
           First clean: <strong class="text-[#2c2c2c]">${result.firstCleanPrice}</strong>
-          <span class="text-[#777]"> (1.5× to bring the home to baseline), then ${result.price} {frequency}</span>
+          <span class="text-[#777]">
+            {result.travelSurchargeApplied
+              ? ` ($${result.baseFirstCleanPrice} + $${result.travelSurcharge} travel), then $${result.price} ${frequency}`
+              : ` (1.5× to bring the home to baseline), then $${result.price} ${frequency}`}
+          </span>
         </div>
-      )}
-      {result.travelSurchargeApplied && (
-        <div class="text-xs text-[#777]">Includes $25 travel surcharge (Ring 2).</div>
       )}
     </div>
   );

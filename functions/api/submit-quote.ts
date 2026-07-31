@@ -5,6 +5,7 @@
 // description. Falls back to Resend email to hello@galgonegreen.com if the
 // Jobber API fails, so we never lose a lead.
 
+import { isCompleteZip } from '../../src/lib/pricing';
 import { validatePromoCode } from '../../src/lib/promo';
 
 interface Env {
@@ -20,12 +21,19 @@ interface Env {
 
 // Mirrors what the client-side QuoteCalculator posts.
 interface QuoteSubmission {
+  // calculatedPrice is the TOTAL (base + travel). basePrice is the published
+  // form rate for the clean itself; the two differ only when a Ring 2 travel
+  // surcharge applies, and the note itemises them separately so the quote
+  // Wilkins sends matches what the customer saw on the form.
   calculatedPrice: number | null;
+  basePrice?: number | null;
   firstCleanPrice?: number | null;
+  baseFirstCleanPrice?: number | null;
   isOutlier: boolean;
   outlierReason?: string;
   isOutOfArea: boolean;
   travelSurchargeApplied: boolean;
+  travelSurcharge?: number;
 
   serviceType: string;
   frequency?: string;
@@ -144,6 +152,10 @@ function validate(s: QuoteSubmission): string[] {
   if (!s.email?.trim()) errs.push('email required');
   if (!/.+@.+\..+/.test(s.email ?? '')) errs.push('email invalid');
   if (!s.propertyAddress?.trim()) errs.push('property address required');
+  // ZIP is required because it is the only thing that decides the Ring 2
+  // travel surcharge. A submission without one prices the job as if it were
+  // local, which is how two outer-Valley quotes went out $25/visit light.
+  if (!isCompleteZip(s.zip)) errs.push('property ZIP required (5 digits)');
   if (!s.serviceType) errs.push('service type required');
   return errs;
 }
@@ -302,7 +314,9 @@ function friendlyService(st: string): string {
   return map[st] ?? st;
 }
 
-function formatDescription(s: QuoteSubmission): string {
+// Exported for tests — the travel-surcharge itemisation is the part that must
+// not silently regress back into a rolled-up base price.
+export function formatDescription(s: QuoteSubmission): string {
   const lines: string[] = [];
   lines.push('INSTANT QUOTE from galgonegreen.com');
   lines.push('');
@@ -313,8 +327,25 @@ function formatDescription(s: QuoteSubmission): string {
       ? ` / ${s.frequency ?? 'clean'}`
       : s.serviceType === 'str-turnover' ? ' / turnover' : '';
     lines.push(`💰 Calculated Price: $${s.calculatedPrice}${per}`);
-    if (s.firstCleanPrice) lines.push(`   First clean (1.5×): $${s.firstCleanPrice}`);
-    if (s.travelSurchargeApplied) lines.push('   (includes $25 Ring 2 travel surcharge)');
+    // Itemise the travel surcharge so the Jobber quote can carry it as its own
+    // line. The published form rate has to appear on the quote unchanged —
+    // rolling travel into the base reads as a bait-and-switch.
+    if (s.travelSurchargeApplied) {
+      const surcharge = s.travelSurcharge ?? 25;
+      if (s.basePrice != null) {
+        lines.push(`   • Cleaning (form rate): $${s.basePrice}`);
+      }
+      lines.push(`   • Travel surcharge (Ring 2, ${s.zip ?? 'zip n/a'}): $${surcharge} per visit`);
+      lines.push('   → BILL AS A SEPARATE LINE ITEM on the Jobber quote.');
+    }
+    if (s.firstCleanPrice) {
+      lines.push(`   First clean (1.5×): $${s.firstCleanPrice}`);
+      if (s.travelSurchargeApplied && s.baseFirstCleanPrice != null) {
+        lines.push(
+          `      • $${s.baseFirstCleanPrice} cleaning + $${s.travelSurcharge ?? 25} travel`,
+        );
+      }
+    }
   }
 
   // Promo code — surfaced prominently so Wilkins applies the discount on the
@@ -390,14 +421,22 @@ function formatDescription(s: QuoteSubmission): string {
   lines.push('');
   // Compose a clean address line from structured fields if we have them,
   // otherwise fall back to the raw string the customer typed.
-  const structuredLine = [
-    s.propertyStreet,
-    s.propertyCity,
-    [s.propertyState, s.zip].filter(Boolean).join(' ') || undefined,
-  ]
-    .filter(Boolean)
-    .join(', ');
-  lines.push(`📍 ${structuredLine || s.propertyAddress}`);
+  // Structured fields only exist when the customer picked a Places suggestion.
+  // When they typed freely we still have their raw address AND their ZIP (it
+  // is its own required field now), so append the ZIP rather than letting a
+  // ZIP-only "structured" line replace the address entirely.
+  const structuredLine = s.propertyStreet
+    ? [
+        s.propertyStreet,
+        s.propertyCity,
+        [s.propertyState, s.zip].filter(Boolean).join(' ') || undefined,
+      ]
+        .filter(Boolean)
+        .join(', ')
+    : [s.propertyAddress, s.zip && !s.propertyAddress.includes(s.zip) ? s.zip : undefined]
+        .filter(Boolean)
+        .join(', ');
+  lines.push(`📍 ${structuredLine}`);
   if (s.preferredStartDate) lines.push(`🗓️ Preferred start: ${s.preferredStartDate}`);
 
   const attribution = [

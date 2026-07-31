@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { calculate, roundToNearest } from '../src/lib/pricing';
+import { calculate, isCompleteZip, roundToNearest } from '../src/lib/pricing';
 
 describe('rounding helper', () => {
   test('rounds to nearest 0.25', () => {
@@ -496,5 +496,103 @@ describe('ZIP / service area', () => {
       zip: '24450', // Lexington
     });
     expect(r.price).toBe(400); // 375 + 25
+  });
+
+  test('Harrisonburg JMU campus (22807) and PO boxes (22803) are Ring 1', () => {
+    for (const zip of ['22803', '22807']) {
+      const r = calculate({ serviceType: 'move-out', bedrooms: 3, zip });
+      expect(r.isOutOfArea).toBe(false);
+      expect(r.travelSurchargeApplied).toBe(false);
+    }
+  });
+});
+
+describe('travel surcharge as a line item', () => {
+  // The published form rate must survive on the quote as its own number. These
+  // assert base and total stay separable rather than the surcharge being
+  // folded invisibly into the base.
+  test('Ring 2 splits base from total instead of inflating the base', () => {
+    const r = calculate({
+      serviceType: 'residential-recurring',
+      squareFootage: '2000-2500',
+      bedrooms: 3,
+      bathrooms: 3,
+      pets: '1-2',
+      frequency: 'biweekly',
+      zip: '22980', // Waynesboro
+    });
+    expect(r.basePrice).toBe(140);
+    expect(r.travelSurcharge).toBe(25);
+    expect(r.price).toBe(165);
+    expect(r.basePrice! + r.travelSurcharge).toBe(r.price);
+  });
+
+  test('Ring 1 base equals total — nothing to itemise', () => {
+    const r = calculate({
+      serviceType: 'residential-recurring',
+      squareFootage: '2000-2500',
+      bedrooms: 3,
+      bathrooms: 3,
+      pets: '1-2',
+      frequency: 'biweekly',
+      zip: '22815', // Broadway
+    });
+    expect(r.basePrice).toBe(r.price);
+    expect(r.travelSurcharge).toBe(0);
+  });
+
+  test('first clean itemises too — base 1.5x plus travel', () => {
+    const r = calculate({
+      serviceType: 'residential-recurring',
+      squareFootage: '2000-2500',
+      bedrooms: 3,
+      bathrooms: 3,
+      pets: '1-2',
+      frequency: 'biweekly',
+      zip: '22980',
+    });
+    expect(r.baseFirstCleanPrice).toBe(210); // 140 * 1.5
+    expect(r.firstCleanPrice).toBe(235); // + 25 travel
+  });
+
+  test('a missing ZIP prices as local — the under-quote this field prevents', () => {
+    const withoutZip = calculate({
+      serviceType: 'deep-clean',
+      squareFootage: '1000-1500',
+      bedrooms: 2,
+      bathrooms: 2,
+      pets: 'none',
+    });
+    const withZip = calculate({
+      serviceType: 'deep-clean',
+      squareFootage: '1000-1500',
+      bedrooms: 2,
+      bathrooms: 2,
+      pets: 'none',
+      zip: '24477', // Stuarts Draft — Ring 2
+    });
+    expect(withoutZip.travelSurchargeApplied).toBe(false);
+    expect(withZip.travelSurchargeApplied).toBe(true);
+    expect(withZip.price! - withoutZip.price!).toBe(25);
+  });
+
+  test('base and total are null when out of area', () => {
+    const r = calculate({ serviceType: 'move-out', bedrooms: 3, zip: '23220' });
+    expect(r.price).toBeNull();
+    expect(r.basePrice).toBeNull();
+    expect(r.baseFirstCleanPrice).toBeNull();
+  });
+});
+
+describe('isCompleteZip', () => {
+  test('accepts exactly five digits, trimmed', () => {
+    expect(isCompleteZip('22980')).toBe(true);
+    expect(isCompleteZip(' 22980 ')).toBe(true);
+  });
+
+  test('rejects partial, empty, and non-numeric entries', () => {
+    for (const v of ['', '229', '229801', '2298a', undefined, null]) {
+      expect(isCompleteZip(v)).toBe(false);
+    }
   });
 });
