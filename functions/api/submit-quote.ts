@@ -5,6 +5,8 @@
 // description. Falls back to Resend email to hello@galgonegreen.com if the
 // Jobber API fails, so we never lose a lead.
 
+import { validatePromoCode } from '../../src/lib/promo';
+
 interface Env {
   JOBBER_CLIENT_ID: string;
   JOBBER_CLIENT_SECRET: string;
@@ -64,6 +66,9 @@ interface QuoteSubmission {
   propertyCity?: string;
   propertyState?: string;
   details?: string;
+
+  // Promo code as entered on /quote — raw, may be unrecognized.
+  promoCode?: string;
 
   utmSource?: string;
   utmMedium?: string;
@@ -311,6 +316,22 @@ function formatDescription(s: QuoteSubmission): string {
     if (s.firstCleanPrice) lines.push(`   First clean (1.5×): $${s.firstCleanPrice}`);
     if (s.travelSurchargeApplied) lines.push('   (includes $25 Ring 2 travel surcharge)');
   }
+
+  // Promo code — surfaced prominently so Wilkins applies the discount on the
+  // official Jobber quote. Raw entry is always shown; recognized codes also
+  // show the offer + which printed piece drove the lead.
+  if (s.promoCode?.trim()) {
+    const p = validatePromoCode(s.promoCode);
+    if (p.valid) {
+      lines.push('');
+      lines.push(`🎟️ Promo code: ${p.normalized} — ${p.label} (from: ${p.piece})`);
+      lines.push('   → APPLY 10% off first recurring clean on the Jobber quote.');
+    } else {
+      lines.push('');
+      lines.push(`🎟️ Promo code: ${p.raw} (not recognized — verify with customer)`);
+    }
+  }
+
   lines.push('');
   lines.push(`🏠 Service: ${friendlyService(s.serviceType)}`);
   if (s.frequency) lines.push(`📅 Frequency: ${s.frequency}`);

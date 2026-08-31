@@ -11,6 +11,7 @@ import {
   type ServiceType,
   type SquareFootageBucket,
 } from '../lib/pricing';
+import { validatePromoCode } from '../lib/promo';
 
 type UIState = {
   serviceType: ServiceType;
@@ -61,6 +62,8 @@ type UIState = {
   propertyCity: string;
   propertyState: string;
   preferredStartDate: string;
+  // promo
+  promoCode: string;
 };
 
 const initial: UIState = {
@@ -103,6 +106,7 @@ const initial: UIState = {
   propertyCity: '',
   propertyState: '',
   preferredStartDate: '',
+  promoCode: '',
 };
 
 function toInputs(s: UIState): QuoteInputs {
@@ -379,6 +383,21 @@ export default function QuoteCalculator({
   const update = (patch: Partial<UIState>) => setS((p) => ({ ...p, ...patch }));
   const [submitState, setSubmitState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [submitError, setSubmitError] = useState<string>('');
+  // Promo code: validated live, but the "not recognized" message only shows
+  // after the field is blurred so we don't nag while the user is still typing.
+  const [promoBlurred, setPromoBlurred] = useState(false);
+
+  // Deep-link support: ?promo=HELLO10 pre-fills the field (e.g. if a future QR
+  // points straight at /quote?promo=…). Manual entry from the printed card
+  // still works exactly the same.
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const fromUrl = new URLSearchParams(window.location.search).get('promo');
+    if (fromUrl) {
+      update({ promoCode: fromUrl.replace(/[^a-zA-Z0-9]/g, '').toUpperCase() });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Places autocomplete: we show a dropdown when the user is typing into the
   // address field. Picking a suggestion fetches place details and fills both
@@ -424,6 +443,7 @@ export default function QuoteCalculator({
   }
 
   const result = useMemo(() => calculate(toInputs(s)), [s]);
+  const promo = useMemo(() => validatePromoCode(s.promoCode), [s.promoCode]);
 
   const isResidential = s.serviceType === 'residential-recurring' || s.serviceType === 'deep-clean';
   const isMove = s.serviceType === 'move-out' || s.serviceType === 'move-in';
@@ -497,6 +517,8 @@ export default function QuoteCalculator({
       propertyCity: s.propertyCity.trim() || undefined,
       propertyState: s.propertyState.trim() || undefined,
       details: s.details.trim() || undefined,
+      // promo — raw entry preserved even if unrecognized, for attribution
+      promoCode: promo.raw || undefined,
       // attribution
       utmSource: urlParams?.get('utm_source') ?? undefined,
       utmMedium: urlParams?.get('utm_medium') ?? undefined,
@@ -1013,6 +1035,41 @@ export default function QuoteCalculator({
           value={s.details}
           onInput={(e) => update({ details: (e.currentTarget as HTMLTextAreaElement).value })}
         />
+      </section>
+
+      {/* Promo code — optional, sits just above the submit */}
+      <section class={sectionClass}>
+        <h2 class="text-lg font-semibold mb-1">
+          Have a promo code?
+          <span class="ml-2 text-xs font-normal text-[#777] uppercase tracking-wide">Optional</span>
+        </h2>
+        <p class="text-sm text-[#777] mb-3">From one of our cards or flyers — enter it to apply your discount.</p>
+        <input
+          type="text"
+          class={`${inputClass} max-w-xs uppercase tracking-wide`}
+          value={s.promoCode}
+          placeholder="Enter your code"
+          autoComplete="off"
+          spellcheck={false}
+          maxLength={20}
+          aria-label="Promo code"
+          onInput={(e) =>
+            update({
+              promoCode: (e.currentTarget as HTMLInputElement).value
+                .replace(/[^a-zA-Z0-9]/g, '')
+                .toUpperCase(),
+            })
+          }
+          onBlur={() => setPromoBlurred(true)}
+        />
+        {promo.valid && (
+          <p class="text-sm mt-2 font-medium" style={`color:${SAGE}`}>
+            ✓ {promo.label} — applied to your quote.
+          </p>
+        )}
+        {promoBlurred && !promo.isEmpty && !promo.valid && (
+          <p class="text-sm mt-2 text-red-600">Code not recognized. We can still send you a quote.</p>
+        )}
       </section>
 
       {/* Price honor disclaimer */}
