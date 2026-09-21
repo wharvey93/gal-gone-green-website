@@ -12,6 +12,7 @@ import {
   type SquareFootageBucket,
 } from '../lib/pricing';
 import { validatePromoCode } from '../lib/promo';
+import { captureAttribution, externalReferrer } from '../lib/attribution';
 
 type UIState = {
   serviceType: ServiceType;
@@ -456,7 +457,10 @@ export default function QuoteCalculator({
     setSubmitState('loading');
     setSubmitError('');
 
-    const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
+    // Persisted first-touch attribution (any page, 90 days) merged with this
+    // page's URL — replaces the old read-the-/quote-URL-only approach that lost
+    // the gclid whenever a visitor browsed before quoting.
+    const attr = typeof window !== 'undefined' ? captureAttribution(window) : {};
     const payload = {
       // calculated
       calculatedPrice: result.price,
@@ -520,13 +524,19 @@ export default function QuoteCalculator({
       // promo — raw entry preserved even if unrecognized, for attribution
       promoCode: promo.raw || undefined,
       // attribution
-      utmSource: urlParams?.get('utm_source') ?? undefined,
-      utmMedium: urlParams?.get('utm_medium') ?? undefined,
-      utmCampaign: urlParams?.get('utm_campaign') ?? undefined,
-      utmContent: urlParams?.get('utm_content') ?? undefined,
-      utmTerm: urlParams?.get('utm_term') ?? undefined,
-      gclid: urlParams?.get('gclid') ?? undefined,
-      referrer: typeof document !== 'undefined' ? document.referrer || undefined : undefined,
+      utmSource: attr.utmSource,
+      utmMedium: attr.utmMedium,
+      utmCampaign: attr.utmCampaign,
+      utmContent: attr.utmContent,
+      utmTerm: attr.utmTerm,
+      gclid: attr.gclid,
+      gbraid: attr.gbraid,
+      wbraid: attr.wbraid,
+      // first external referrer of the touch; falls back to this page's own
+      // external referrer (internal galgonegreen.com referrers are dropped)
+      referrer: attr.referrer ?? (typeof document !== 'undefined' ? externalReferrer(document.referrer) : undefined),
+      landingPage: attr.landingPage,
+      attributionCapturedAt: attr.capturedAt,
     };
 
     try {

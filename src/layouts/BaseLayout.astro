@@ -88,6 +88,14 @@ const canonicalUrl = `https://galgonegreen.com${canonicalPath}`;
   </main>
   <Footer />
 
+  <!-- Lead attribution: persist gclid/gbraid/wbraid/UTM/referrer from the FIRST
+       page a visitor lands on (90-day localStorage) so /quote can attach it
+       even when the visitor browses around first. See src/lib/attribution.ts -->
+  <script>
+    import { captureAttribution } from '../lib/attribution';
+    try { captureAttribution(window); } catch {}
+  </script>
+
   <!-- Scroll reveal observer -->
   <script>
     const observer = new IntersectionObserver(

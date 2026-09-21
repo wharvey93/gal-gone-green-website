@@ -6,6 +6,7 @@
 // Jobber API fails, so we never lose a lead.
 
 import { validatePromoCode } from '../../src/lib/promo';
+import { classifyLeadSource } from '../../src/lib/attribution';
 
 interface Env {
   JOBBER_CLIENT_ID: string;
@@ -76,7 +77,21 @@ interface QuoteSubmission {
   utmContent?: string;
   utmTerm?: string;
   gclid?: string;
+  gbraid?: string;
+  wbraid?: string;
   referrer?: string;
+  /** Path + query of the first page of the attributed touch. */
+  landingPage?: string;
+  /** ISO time the attribution touch was captured (first landing). */
+  attributionCapturedAt?: string;
+}
+
+// One short label for Jobber's built-in lead-source field. Computed server-side
+// from the attribution the browser persisted; a valid promo code's printed
+// piece counts as the source when there is no paid/UTM signal.
+function leadSourceFor(s: QuoteSubmission): string {
+  const promo = s.promoCode?.trim() ? validatePromoCode(s.promoCode) : null;
+  return classifyLeadSource(s, { promoPiece: promo?.valid && promo.piece ? promo.piece : undefined });
 }
 
 const JOBBER_TOKEN_URL = 'https://api.getjobber.com/api/oauth/token';
@@ -230,6 +245,10 @@ async function upsertClient(accessToken: string, s: QuoteSubmission): Promise<Jo
       postalCode: s.zip,
       country: 'United States',
     },
+    // Jobber's built-in lead source. Without this Jobber stamps every API-made
+    // client with the app name ("Gal Gone Green Quote Form"), which is why the
+    // Google Ads reconcile could never separate paid leads from the rest.
+    sourceAttribution: { sourceText: leadSourceFor(s) },
   };
   type Res = { clientCreate: { client: JobberClient | null; userErrors: { message: string; path: string[] }[] } };
   const data = await gql<Res>(accessToken, query, { input });
@@ -400,14 +419,20 @@ function formatDescription(s: QuoteSubmission): string {
   lines.push(`📍 ${structuredLine || s.propertyAddress}`);
   if (s.preferredStartDate) lines.push(`🗓️ Preferred start: ${s.preferredStartDate}`);
 
+  lines.push(`🏷️ Lead source: ${leadSourceFor(s)}`);
   const attribution = [
     s.utmSource && `source=${s.utmSource}`,
     s.utmMedium && `medium=${s.utmMedium}`,
     s.utmCampaign && `campaign=${s.utmCampaign}`,
+    s.utmContent && `content=${s.utmContent}`,
+    s.utmTerm && `term=${s.utmTerm}`,
     s.gclid && `gclid=${s.gclid}`,
+    s.gbraid && `gbraid=${s.gbraid}`,
+    s.wbraid && `wbraid=${s.wbraid}`,
   ].filter(Boolean);
   if (attribution.length) lines.push(`📊 ${attribution.join(' · ')}`);
   if (s.referrer) lines.push(`🔗 Referrer: ${s.referrer}`);
+  if (s.landingPage) lines.push(`🛬 Landing page: ${s.landingPage}${s.attributionCapturedAt ? ` (first seen ${s.attributionCapturedAt})` : ''}`);
 
   lines.push('');
   lines.push('──────────────────────────');
@@ -452,7 +477,7 @@ async function sendNotificationEmail(
 
   const subject = jobberFailed
     ? `[⚠️ MANUAL] New quote from ${s.name} — ${priceStr}`
-    : `New quote: ${s.name} — ${priceStr} — ${friendlyService(s.serviceType)}`;
+    : `New quote: ${s.name} — ${priceStr} — ${friendlyService(s.serviceType)} [${leadSourceFor(s)}]`;
 
   const header = jobberFailed
     ? [
