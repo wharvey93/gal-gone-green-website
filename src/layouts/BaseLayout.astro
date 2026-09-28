@@ -52,7 +52,10 @@ const canonicalUrl = `https://galgonegreen.com${canonicalPath}`;
     rel="stylesheet"
   />
 
-  <!-- Plausible Analytics -->
+  <!-- Plausible Analytics. The queue shim lets inline page scripts (e.g. the
+       QuoteSubmitted event on /thank-you-quote/) call plausible() before the
+       deferred script has loaded; the script replays the queue on load. -->
+  <script is:inline>window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
   <script defer data-domain="galgonegreen.com" src="https://plausible.io/js/script.js"></script>
 
   <!-- Microsoft Clarity -->
