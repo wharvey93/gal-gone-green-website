@@ -32,7 +32,7 @@ describe('residential recurring', () => {
     expect(r.isOutlier).toBe(false);
   });
 
-  test('small home weekly enforces $80 minimum', () => {
+  test('small home weekly enforces $90 minimum', () => {
     const r = calculate({
       serviceType: 'residential-recurring',
       squareFootage: 'under-1000',
@@ -43,7 +43,7 @@ describe('residential recurring', () => {
       extraLivingSpaces: 0,
       frequency: 'weekly',
     });
-    expect(r.price).toBe(80);
+    expect(r.price).toBe(90);
   });
 
   test('biweekly 2500-3000 sqft with finished basement and pets', () => {
@@ -63,7 +63,7 @@ describe('residential recurring', () => {
   });
 
   test('monthly multiplier 1,500-2,000 sqft', () => {
-    // base 2.5 * 1.2 = 3.0 hrs * $40 = $120
+    // base 3.0 * 1.2 = 3.6 → 3.5 hrs * $40 = $140 (base was 2.5 → $120 before 19 Oct 2026)
     const r = calculate({
       serviceType: 'residential-recurring',
       squareFootage: '1500-2000',
@@ -74,8 +74,8 @@ describe('residential recurring', () => {
       extraLivingSpaces: 0,
       frequency: 'monthly',
     });
-    expect(r.price).toBe(120);
-    expect(r.hours).toBe(3.0);
+    expect(r.price).toBe(140);
+    expect(r.hours).toBe(3.5);
   });
 
   test('3+ pets and extra bathrooms and living spaces', () => {
@@ -221,6 +221,43 @@ describe('deep clean', () => {
     });
     expect(r.hours).toBe(8.0);
     expect(r.price).toBe(360);
+  });
+  test('1,500-2,000 sqft deep clean enforces the $225 floor', () => {
+    // base 3.0 * 1.5 = 4.5 hrs * $45 = $202.50 → $205, below the $225 floor for 1,500+ sqft
+    const r = calculate({
+      serviceType: 'deep-clean',
+      squareFootage: '1500-2000',
+      bedrooms: 3,
+      bathrooms: 2,
+      pets: 'none',
+    });
+    expect(r.price).toBe(225);
+  });
+
+  test('1,000-1,500 sqft deep clean keeps the $200 floor', () => {
+    const r = calculate({
+      serviceType: 'deep-clean',
+      squareFootage: '1000-1500',
+      bedrooms: 2,
+      bathrooms: 1,
+      pets: 'none',
+    });
+    expect(r.price).toBe(200);
+  });
+
+  test('biweekly 1,500-2,000 sqft regular is $120', () => {
+    const r = calculate({
+      serviceType: 'residential-recurring',
+      squareFootage: '1500-2000',
+      bedrooms: 3,
+      bathrooms: 2,
+      pets: 'none',
+      finishedBasement: false,
+      extraLivingSpaces: 0,
+      frequency: 'biweekly',
+    });
+    expect(r.hours).toBe(3.0);
+    expect(r.price).toBe(120);
   });
 });
 

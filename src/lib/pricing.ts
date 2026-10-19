@@ -137,9 +137,13 @@ export interface QuoteResult {
 // ----- Rate tables -----
 
 const RESIDENTIAL_RATE = 40;
-const RESIDENTIAL_MIN = 80;
+const RESIDENTIAL_MIN = 90; // was 80; small homes really take ~2.4 h (time model, 19 Oct 2026)
 const DEEP_CLEAN_RATE = 45;
 const DEEP_CLEAN_MIN = 200;
+// Deep cleans on homes of 1,500 sq ft and up really take ~5.1 h; 6 of 14 lost
+// money at $200-205 (time model, 19 Oct 2026).
+const DEEP_CLEAN_MIN_1500_PLUS = 225;
+const SMALL_HOME_BANDS = new Set(['under-1000', '1000-1500']);
 const DEEP_CLEAN_MULTIPLIER = 1.5;
 const COMMERCIAL_RATE = 35;
 const COMMERCIAL_MIN = 70;
@@ -148,7 +152,7 @@ const TRAVEL_SURCHARGE = 25;
 const RESIDENTIAL_BASE_HRS: Record<SquareFootageBucket, number> = {
   'under-1000': 1.5,
   '1000-1500': 2.0,
-  '1500-2000': 2.5,
+  '1500-2000': 3.0, // was 2.5; real regular clean time is 3.0 h (time model, 19 Oct 2026)
   '2000-2500': 3.0,
   '2500-3000': 3.5,
   '3000-3500': 4.0,
@@ -535,7 +539,8 @@ function calcDeepClean(
   const hours = roundToNearest(adjustedHrs * DEEP_CLEAN_MULTIPLIER, 0.25);
 
   let basePrice = roundToNearest(hours * DEEP_CLEAN_RATE, 5);
-  basePrice = Math.max(basePrice, DEEP_CLEAN_MIN);
+  const deepMin = SMALL_HOME_BANDS.has(inp.squareFootage) ? DEEP_CLEAN_MIN : DEEP_CLEAN_MIN_1500_PLUS;
+  basePrice = Math.max(basePrice, deepMin);
   const price = basePrice + travelSurcharge;
 
   return {
