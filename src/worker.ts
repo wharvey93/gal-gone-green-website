@@ -14,14 +14,14 @@ interface WorkerEnv extends SubmitEnv, HealthEnv {
 }
 
 export default {
-  async fetch(request: Request, env: WorkerEnv, _ctx: ExecutionContext): Promise<Response> {
+  async fetch(request: Request, env: WorkerEnv, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
 
     if (url.pathname === '/api/submit-quote') {
       if (request.method !== 'POST') {
         return new Response('Method Not Allowed', { status: 405, headers: { Allow: 'POST' } });
       }
-      return handleSubmitQuote(request, env);
+      return handleSubmitQuote(request, env, ctx);
     }
 
     if (url.pathname === '/api/health') {

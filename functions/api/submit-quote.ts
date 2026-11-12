@@ -8,8 +8,9 @@
 import { isCompleteZip } from '../../src/lib/pricing';
 import { validatePromoCode } from '../../src/lib/promo';
 import { classifyLeadSource } from '../../src/lib/attribution';
+import { buildDeskPayload, forwardToDesk, type ForwardEnv } from './desk-forward';
 
-interface Env {
+interface Env extends ForwardEnv {
   JOBBER_CLIENT_ID: string;
   JOBBER_CLIENT_SECRET: string;
   JOBBER_REFRESH_TOKEN: string;
@@ -112,7 +113,11 @@ const json = (body: unknown, status = 200) =>
   });
 
 // Plain handler — callable from either a Pages Function wrapper or a Worker.
-export async function handleSubmitQuote(request: Request, env: Env): Promise<Response> {
+export async function handleSubmitQuote(
+  request: Request,
+  env: Env,
+  ctx?: { waitUntil(p: Promise<unknown>): void },
+): Promise<Response> {
   let submission: QuoteSubmission;
   try {
     submission = await request.json();
@@ -143,6 +148,23 @@ export async function handleSubmitQuote(request: Request, env: Env): Promise<Res
   await sendNotificationEmail(env, submission, { jobberClientId, jobberError }).catch((e) => {
     console.error('Resend notification failed:', e instanceof Error ? e.message : e);
   });
+
+  // Fast path to the desk (booking agent, 12 Nov 2026): Ops HQ gets the lead in seconds. Runs after the
+  // response when the Worker gives us waitUntil, never throws, and is a no-op until its env is set.
+  try {
+    const forward = forwardToDesk(
+      env,
+      buildDeskPayload(submission, {
+        submissionId: crypto.randomUUID(),
+        leadSource: leadSourceFor(submission),
+        jobberClientCreated: !jobberError,
+      }),
+    );
+    if (ctx) ctx.waitUntil(forward);
+    else await forward;
+  } catch (e) {
+    console.error('[desk-forward] could not build the payload', e instanceof Error ? e.name : 'Error');
+  }
 
   return json({
     ok: true,

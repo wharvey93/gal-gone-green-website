@@ -13,7 +13,10 @@
   // quote-submission alert. Jobber/Resend API keys stay as Worker secrets.
   "vars": {
     "NOTIFY_EMAILS": "will@harvey-capital.com,hello@galgonegreen.com",
-    "NOTIFY_FROM_EMAIL": "Gal Gone Green <noreply@galgonegreen.com>"
+    "NOTIFY_FROM_EMAIL": "Gal Gone Green <noreply@galgonegreen.com>",
+    // Quote-form fast path to the desk (Ops HQ, GGG booking agent 12 Nov 2026). Not secret. The shared
+    // secret GGG_QUOTE_FORWARD_SECRET is a Worker secret; with it unset the forward does nothing.
+    "OPS_HQ_QUOTE_URL": "https://ops-hq-one.vercel.app/api/hooks/quote-form"
   },
   "observability": {
     "enabled": true
