@@ -9,8 +9,9 @@ import { isCompleteZip } from '../../src/lib/pricing';
 import { validatePromoCode } from '../../src/lib/promo';
 import { classifyLeadSource } from '../../src/lib/attribution';
 import { buildDeskPayload, forwardToDesk, type ForwardEnv } from './desk-forward';
+import { forwardAllowed, verifyTurnstile, type TurnstileEnv, type TurnstileResult } from './turnstile';
 
-interface Env extends ForwardEnv {
+interface Env extends ForwardEnv, TurnstileEnv {
   JOBBER_CLIENT_ID: string;
   JOBBER_CLIENT_SECRET: string;
   JOBBER_REFRESH_TOKEN: string;
@@ -80,6 +81,9 @@ interface QuoteSubmission {
   // Promo code as entered on /quote — raw, may be unrecognized.
   promoCode?: string;
 
+  // Cloudflare Turnstile token from the form's widget (never forwarded, never stored).
+  turnstileToken?: string;
+
   utmSource?: string;
   utmMedium?: string;
   utmCampaign?: string;
@@ -128,6 +132,10 @@ export async function handleSubmitQuote(
   const errors = validate(submission);
   if (errors.length) return json({ ok: false, errors }, 400);
 
+  // Turnstile never blocks the quote itself: it only decides the desk fast path below (functions/api/turnstile.ts).
+  // Started now so it runs alongside the Jobber calls and adds no wait of its own (3 s cap, never throws).
+  const turnstileCheck = verifyTurnstile(env, submission.turnstileToken, request.headers.get('CF-Connecting-IP'));
+
   let jobberClientId: string | undefined;
   let jobberNoteId: string | undefined;
   let jobberError: string | undefined;
@@ -145,25 +153,31 @@ export async function handleSubmitQuote(
   // Fire notification email on every submission — Wilkins + Will get pinged
   // whether Jobber worked or not. If Jobber failed the email flags it so
   // Wilkins knows to create the lead manually.
-  await sendNotificationEmail(env, submission, { jobberClientId, jobberError }).catch((e) => {
+  const turnstile = await turnstileCheck;
+  await sendNotificationEmail(env, submission, { jobberClientId, jobberError, turnstile }).catch((e) => {
     console.error('Resend notification failed:', e instanceof Error ? e.message : e);
   });
 
   // Fast path to the desk (booking agent, 12 Nov 2026): Ops HQ gets the lead in seconds. Runs after the
   // response when the Worker gives us waitUntil, never throws, and is a no-op until its env is set.
-  try {
-    const forward = forwardToDesk(
-      env,
-      buildDeskPayload(submission, {
-        submissionId: crypto.randomUUID(),
-        leadSource: leadSourceFor(submission),
-        jobberClientCreated: !jobberError,
-      }),
-    );
-    if (ctx) ctx.waitUntil(forward);
-    else await forward;
-  } catch (e) {
-    console.error('[desk-forward] could not build the payload', e instanceof Error ? e.name : 'Error');
+  // Only quotes that passed Turnstile (or while Turnstile is not switched on) take this path.
+  if (!forwardAllowed(turnstile)) {
+    console.log('[desk-forward] skipped: turnstile', turnstile);
+  } else {
+    try {
+      const forward = forwardToDesk(
+        env,
+        buildDeskPayload(submission, {
+          submissionId: crypto.randomUUID(),
+          leadSource: leadSourceFor(submission),
+          jobberClientCreated: !jobberError,
+        }),
+      );
+      if (ctx) ctx.waitUntil(forward);
+      else await forward;
+    } catch (e) {
+      console.error('[desk-forward] could not build the payload', e instanceof Error ? e.name : 'Error');
+    }
   }
 
   return json({
@@ -516,6 +530,7 @@ export function formatDescription(s: QuoteSubmission): string {
 interface NotifyContext {
   jobberClientId?: string;
   jobberError?: string;
+  turnstile?: TurnstileResult;
 }
 
 async function sendNotificationEmail(
@@ -554,7 +569,13 @@ async function sendNotificationEmail(
         '',
       ];
 
-  const text = [...header, formatDescription(s)].filter(Boolean).join('\n');
+  const botCheck =
+    ctx.turnstile === 'fail'
+      ? ['🤖 Bot check (Turnstile) FAILED: not sent to the desk fast path. Check it is a real person before replying.', '']
+      : ctx.turnstile === 'unavailable'
+        ? ['🤖 Bot check (Turnstile) could not run (Cloudflare unavailable): not sent to the desk fast path. Reply from this email.', '']
+        : [];
+  const text = [...header, ...botCheck, formatDescription(s)].filter(Boolean).join('\n');
   const html = `<pre style="font:14px/1.5 ui-monospace,Menlo,monospace;white-space:pre-wrap">${escapeHtml(text)}</pre>`;
 
   const res = await fetch('https://api.resend.com/emails', {

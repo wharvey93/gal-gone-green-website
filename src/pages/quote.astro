@@ -2,6 +2,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import QuoteCalculator from '../components/QuoteCalculator.tsx';
 const googleMapsKey = import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY;
+// Cloudflare Turnstile site key (public; set in the build env like the Maps key). Unset = no widget.
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
 ---
 <BaseLayout
   title="Get Your Instant Quote | Gal Gone Green"
@@ -19,7 +21,7 @@ const googleMapsKey = import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY;
       <p class="text-sm text-[#777] mb-8">
         15 years in the Valley · Bonded, insured, background-checked · Flat-rate · Eco-friendly products
       </p>
-      <QuoteCalculator client:load submitMode="live" phone="(571) 209-7745" googleMapsApiKey={googleMapsKey} />
+      <QuoteCalculator client:load submitMode="live" phone="(571) 209-7745" googleMapsApiKey={googleMapsKey} turnstileSiteKey={turnstileSiteKey} />
     </div>
   </div>
 </BaseLayout>

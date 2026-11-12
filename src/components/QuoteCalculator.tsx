@@ -377,13 +377,70 @@ interface Props {
   submitMode?: SubmitMode;
   phone?: string;
   googleMapsApiKey?: string;
+  /** Cloudflare Turnstile site key (public). Unset = no widget; the quote still submits. */
+  turnstileSiteKey?: string;
+}
+
+// Cloudflare Turnstile (CEO yes, 12 Nov 2026). Invisible for almost everyone ("interaction-only"). It never blocks
+// the Book button: a missing or failed token only keeps the quote off the desk fast path (functions/api/turnstile.ts).
+declare global {
+  interface Window {
+    turnstile?: {
+      render: (el: HTMLElement, opts: Record<string, unknown>) => string;
+      reset: (id?: string) => void;
+    };
+  }
+}
+const TURNSTILE_SRC = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+
+function useTurnstile(siteKey: string | undefined, enabled: boolean) {
+  const ref = useRef<HTMLDivElement>(null);
+  const widgetId = useRef<string | null>(null);
+  const [token, setToken] = useState<string>('');
+  useEffect(() => {
+    if (!siteKey || !enabled || typeof window === 'undefined') return;
+    let cancelled = false;
+    const render = () => {
+      if (cancelled || !ref.current || !window.turnstile || widgetId.current) return;
+      widgetId.current = window.turnstile.render(ref.current, {
+        sitekey: siteKey,
+        appearance: 'interaction-only',
+        action: 'quote',
+        callback: (t: string) => setToken(t),
+        'expired-callback': () => setToken(''),
+        'error-callback': () => setToken(''),
+      });
+    };
+    if (window.turnstile) render();
+    else {
+      let tag = document.querySelector<HTMLScriptElement>(`script[src="${TURNSTILE_SRC}"]`);
+      if (!tag) {
+        tag = document.createElement('script');
+        tag.src = TURNSTILE_SRC;
+        tag.async = true;
+        tag.defer = true;
+        document.head.appendChild(tag);
+      }
+      tag.addEventListener('load', render);
+    }
+    return () => {
+      cancelled = true;
+    };
+  }, [siteKey, enabled]);
+  const reset = () => {
+    setToken('');
+    if (widgetId.current && window.turnstile) window.turnstile.reset(widgetId.current);
+  };
+  return { ref, token, reset };
 }
 
 export default function QuoteCalculator({
   submitMode = 'preview',
   phone = '(571) 209-7745',
   googleMapsApiKey,
+  turnstileSiteKey,
 }: Props) {
+  const turnstile = useTurnstile(turnstileSiteKey, submitMode === 'live');
   const [s, setS] = useState<UIState>(initial);
   const update = (patch: Partial<UIState>) => setS((p) => ({ ...p, ...patch }));
   const [submitState, setSubmitState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -554,6 +611,8 @@ export default function QuoteCalculator({
       referrer: attr.referrer ?? (typeof document !== 'undefined' ? externalReferrer(document.referrer) : undefined),
       landingPage: attr.landingPage,
       attributionCapturedAt: attr.capturedAt,
+      // bot check: empty when the widget is off or has not answered yet (the quote still goes through)
+      turnstileToken: turnstile.token || undefined,
     };
 
     try {
@@ -564,6 +623,7 @@ export default function QuoteCalculator({
       });
       const data = (await res.json().catch(() => ({}))) as { ok?: boolean; errors?: string[]; error?: string };
       if (!res.ok || !data.ok) {
+        turnstile.reset(); // tokens are single-use: a retry needs a fresh one
         setSubmitState('error');
         setSubmitError(data.errors?.join(', ') ?? data.error ?? `Submit failed (${res.status})`);
         return;
@@ -584,6 +644,7 @@ export default function QuoteCalculator({
         window.location.href = `/thank-you-quote/?${params.toString()}`;
       }
     } catch (err) {
+      turnstile.reset();
       setSubmitState('error');
       setSubmitError(err instanceof Error ? err.message : 'Network error');
     }
@@ -1171,6 +1232,7 @@ export default function QuoteCalculator({
           )}
           {submitMode === 'live' && (
             <div class="flex flex-col items-end gap-1">
+              {turnstileSiteKey && <div ref={turnstile.ref} />}
               <button
                 type="button"
                 disabled={!contactComplete || submitState === 'loading'}
