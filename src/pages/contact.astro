@@ -6,7 +6,8 @@ const schema = {
   "@type": "ContactPage",
   "mainEntity": {
     "@type": "LocalBusiness",
-    "name": "Gal Gone Green",
+    "name": "Gal Gone Green Cleaning",
+    "legalName": "GGG Cleaning LLC",
     "telephone": "+15712097745",
     "email": "hello@galgonegreen.com",
     "address": {
@@ -15,6 +16,17 @@ const schema = {
       "addressLocality": "Broadway",
       "addressRegion": "VA",
       "postalCode": "22815"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 38.605719,
+      "longitude": -78.801078
+    },
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      "opens": "08:00",
+      "closes": "17:00"
     }
   }
 };
@@ -29,9 +41,9 @@ const schema = {
   <!-- Hero -->
   <section class="py-14 md:py-18 bg-green-800 relative grain">
     <div class="container relative z-10 text-center">
-      <p class="text-green-300 font-medium text-sm uppercase tracking-widest mb-3 reveal">Contact Us</p>
-      <h1 class="text-white mb-4 reveal">How to Reach Us</h1>
-      <p class="text-green-100/80 text-lg leading-relaxed max-w-2xl mx-auto reveal">
+      <p class="text-green-300 font-medium text-sm uppercase tracking-widest mb-3 hero-reveal">Contact Us</p>
+      <h1 class="text-white mb-4 hero-reveal">How to Reach Us</h1>
+      <p class="text-green-100/80 text-lg leading-relaxed max-w-2xl mx-auto hero-reveal">
         Call, text, or email — whichever's easiest.
       </p>
     </div>

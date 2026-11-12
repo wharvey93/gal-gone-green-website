@@ -1,6 +1,7 @@
 ---
-import { Image } from 'astro:assets';
-import logo from '../assets/images/logo/ggg-logo.png';
+// Pre-sized logo (SEO D2, 13 Nov 2026): shown 40 px tall, so 320 px + a 640 px 2x file.
+import logo1x from '../assets/images/logo/ggg-logo-320.png';
+import logo2x from '../assets/images/logo/ggg-logo-640.png';
 
 const serviceLinks = [
   { label: 'Residential Cleaning', href: '/residential' },
@@ -33,13 +34,15 @@ const areaLinks = [
       <!-- Brand Column -->
       <div class="lg:col-span-1">
         <a href="/" class="inline-block mb-4">
-          <Image
-            src={logo}
+          <img
+            src={logo1x.src}
+            srcset={`${logo1x.src} 1x, ${logo2x.src} 2x`}
+            width={logo1x.width}
+            height={logo1x.height}
             alt="Gal Gone Green"
             class="h-10 w-auto brightness-0 invert opacity-90"
-            widths={[400, 640]}
-            sizes="320px"
-            quality={90}
+            loading="lazy"
+            decoding="async"
           />
         </a>
         <p class="text-green-200/80 text-sm leading-relaxed mb-6">

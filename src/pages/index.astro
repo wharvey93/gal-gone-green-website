@@ -2,6 +2,11 @@
 import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import heroImg from '../assets/images/photos/hero-living-room.jpg';
+// Pre-sized hero (SEO D2, 13 Nov 2026): the noop image service cannot resize, so phones were
+// pulling the 1920 px original for every srcset width. These are the same photo, resized, JPEG q85.
+import hero640 from '../assets/images/photos/hero-living-room-640.jpg';
+import hero1024 from '../assets/images/photos/hero-living-room-1024.jpg';
+import hero1440 from '../assets/images/photos/hero-living-room-1440.jpg';
 import deepCleanImg from '../assets/images/photos/cleaning-action.jpg';
 import commercialImg from '../assets/images/photos/hero-office.jpg';
 import airbnbImg from '../assets/images/photos/vacation-rental.jpg';
@@ -9,7 +14,8 @@ import airbnbImg from '../assets/images/photos/vacation-rental.jpg';
 const schema = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
-  "name": "Gal Gone Green",
+  "name": "Gal Gone Green Cleaning",
+  "legalName": "GGG Cleaning LLC",
   "image": "https://galgonegreen.com/images/og-default.jpg",
   "url": "https://galgonegreen.com",
   "telephone": "+15712097745",
@@ -24,8 +30,8 @@ const schema = {
   },
   "geo": {
     "@type": "GeoCoordinates",
-    "latitude": 38.6132,
-    "longitude": -78.7988
+    "latitude": 38.605719,
+    "longitude": -78.801078
   },
   "areaServed": [
     "Harrisonburg, VA", "Broadway, VA", "Bridgewater, VA", "Dayton, VA",
@@ -117,28 +123,32 @@ const areas = [
   <!-- ===== HERO ===== -->
   <section class="relative min-h-[70vh] md:min-h-[80vh] flex items-center overflow-hidden">
     <div class="absolute inset-0">
-      <Image
-        src={heroImg}
+      <img
+        src={hero1024.src}
+        srcset={`${hero640.src} 640w, ${hero1024.src} 1024w, ${hero1440.src} 1440w, ${heroImg.src} 1920w`}
+        sizes="100vw"
+        width={heroImg.width}
+        height={heroImg.height}
         alt="Beautiful clean living room in a Shenandoah Valley home"
         class="w-full h-full object-cover"
-        widths={[640, 1024, 1440, 1920]}
-        sizes="100vw"
         loading="eager"
+        fetchpriority="high"
+        decoding="async"
       />
       <div class="absolute inset-0 bg-gradient-to-r from-green-950/80 via-green-900/60 to-green-900/30"></div>
     </div>
 
     <div class="container relative z-10 py-20">
       <div class="max-w-2xl">
-        <p class="text-green-300 font-medium text-sm uppercase tracking-widest mb-4 reveal">Eco-Friendly Cleaning</p>
-        <h1 class="text-white text-4xl md:text-5xl lg:text-6xl font-[var(--font-heading)] leading-tight mb-4 reveal text-balance">
+        <p class="text-green-300 font-medium text-sm uppercase tracking-widest mb-4 hero-reveal">Eco-Friendly Cleaning</p>
+        <h1 class="text-white text-4xl md:text-5xl lg:text-6xl font-[var(--font-heading)] leading-tight mb-4 hero-reveal text-balance">
           Eco-Friendly Cleaning for Your Harrisonburg Home &amp; Business
         </h1>
-        <p class="text-green-200 text-xl md:text-2xl font-[var(--font-heading)] mb-6 reveal">{tagline}</p>
-        <p class="text-green-100/90 text-lg md:text-xl leading-relaxed mb-10 max-w-xl reveal">
+        <p class="text-green-200 text-xl md:text-2xl font-[var(--font-heading)] mb-6 hero-reveal">{tagline}</p>
+        <p class="text-green-100/90 text-lg md:text-xl leading-relaxed mb-10 max-w-xl hero-reveal">
           Since 2011, families and businesses across the Shenandoah Valley have trusted Gal Gone Green for cleaning that's as thoughtful as it is thorough. Locally owned, never a franchise.
         </p>
-        <div class="flex flex-wrap gap-4 reveal">
+        <div class="flex flex-wrap gap-4 hero-reveal">
           <a href="/quote" class="btn-primary text-lg">
             Book a Cleaning
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>

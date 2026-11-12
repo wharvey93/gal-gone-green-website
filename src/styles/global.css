@@ -193,6 +193,18 @@
     transform: translateY(0);
   }
 
+  /* Hero reveal (SEO D5, 13 Nov 2026): the same fade-up as .reveal, but pure CSS.
+     The headline no longer waits for JavaScript: the resting state is visible, and
+     the animation only plays on top of it. Reduced-motion visitors get it at once. */
+  .hero-reveal {
+    animation: hero-reveal-in 0.8s ease both;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-reveal {
+      animation: none;
+    }
+  }
+
   /* Subtle grain texture overlay */
   .grain::after {
     content: '';
@@ -208,5 +220,17 @@
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+}
+
+/* Hero reveal keyframes (SEO D5): from the old .reveal start state to visible. */
+@keyframes hero-reveal-in {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

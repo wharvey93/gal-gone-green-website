@@ -13,7 +13,10 @@ export default defineConfig({
   integrations: [
     preact(),
     sitemap({
-      filter: (page) => !page.includes('/quote-preview'),
+      // Keep noindex pages out of the sitemap (SEO D1, 13 Nov 2026).
+      filter: (page) =>
+        !page.includes('/quote-preview') &&
+        !page.includes('/thank-you'),
     }),
   ],
   vite: {

@@ -13,7 +13,8 @@ const neighbors = getNeighborLocations(location.neighborLinks);
 const schema = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
-  "name": "Gal Gone Green",
+  "name": "Gal Gone Green Cleaning",
+  "legalName": "GGG Cleaning LLC",
   "telephone": "+15712097745",
   "email": "hello@galgonegreen.com",
   "address": {
@@ -51,10 +52,10 @@ const faqSchema = location.faq.length > 0 ? {
   <section class="py-16 md:py-24 bg-green-800 relative grain">
     <div class="container relative z-10">
       <div class="max-w-3xl">
-        <p class="text-green-300 font-medium text-sm uppercase tracking-widest mb-4 reveal">{location.county} &middot; {location.driveMinutes === 0 ? 'Our Home Base' : `~${location.driveMinutes} min from Broadway`}</p>
-        <h1 class="text-white mb-6 reveal">{location.h1}</h1>
-        <p class="text-green-100/80 text-lg leading-relaxed reveal">{location.intro}</p>
-        <div class="mt-8 reveal">
+        <p class="text-green-300 font-medium text-sm uppercase tracking-widest mb-4 hero-reveal">{location.county} &middot; {location.driveMinutes === 0 ? 'Our Home Base' : `~${location.driveMinutes} min from Broadway`}</p>
+        <h1 class="text-white mb-6 hero-reveal">{location.h1}</h1>
+        <p class="text-green-100/80 text-lg leading-relaxed hero-reveal">{location.intro}</p>
+        <div class="mt-8 hero-reveal">
           <a href="/quote" class="btn-primary">
             Book a Cleaning in {location.name}
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>

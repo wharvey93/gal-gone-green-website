@@ -1,6 +1,8 @@
 ---
-import { Image } from 'astro:assets';
-import logo from '../assets/images/logo/ggg-logo.png';
+// Pre-sized logo (SEO D2, 13 Nov 2026): the 5333 px master is shown 40-48 px tall,
+// so ship a 320 px file plus a 640 px file for 2x screens. Eager: it is above the fold.
+import logo1x from '../assets/images/logo/ggg-logo-320.png';
+import logo2x from '../assets/images/logo/ggg-logo-640.png';
 
 const navLinks = [
   { label: 'About', href: '/about' },
@@ -14,12 +16,15 @@ const navLinks = [
   <div class="container" style="display:flex;align-items:center;justify-content:space-between;height:72px;padding-right:1.25rem;">
     <!-- Logo -->
     <a href="/" style="display:flex;align-items:center;flex-shrink:0;" aria-label="Gal Gone Green — Home">
-      <Image
-        src={logo}
+      <img
+        src={logo1x.src}
+        srcset={`${logo1x.src} 1x, ${logo2x.src} 2x`}
+        width={logo1x.width}
+        height={logo1x.height}
         alt="Gal Gone Green logo"
         class="h-10 md:h-12 w-auto"
-        widths={[200, 320]}
-        sizes="(max-width: 768px) 200px, 320px"
+        loading="eager"
+        decoding="async"
       />
     </a>
 
