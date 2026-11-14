@@ -21,6 +21,9 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
       <p class="text-sm text-[#777] mb-8">
         15 years in the Valley · Bonded, insured, background-checked · Flat-rate · Eco-friendly products
       </p>
+      <div class="mb-8 -mt-4 rounded-md border border-[#cfe3cf] bg-[#eef6ee] px-4 py-3 text-sm md:text-base text-[#2c4a2c]">
+        <strong>Booking a regular clean?</strong> Weekly, every other week or monthly, your first regular visit includes the inside of your fridge and oven, cleaned free. It's normally a $50 add-on.
+      </div>
       <QuoteCalculator client:load submitMode="live" phone="(571) 209-7745" googleMapsApiKey={googleMapsKey} turnstileSiteKey={turnstileSiteKey} />
     </div>
   </div>
