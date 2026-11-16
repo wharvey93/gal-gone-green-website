@@ -145,7 +145,9 @@ const DEEP_CLEAN_MIN = 200;
 const DEEP_CLEAN_MIN_1500_PLUS = 225;
 const SMALL_HOME_BANDS = new Set(['under-1000', '1000-1500']);
 const DEEP_CLEAN_MULTIPLIER = 1.5;
-const COMMERCIAL_RATE = 35;
+// New commercial quotes only (CEO, 16 Nov 2026: $35 to $44 per labour hour). Existing
+// commercial accounts keep their agreed prices in Jobber; this form prices new requests.
+const COMMERCIAL_RATE = 44;
 const COMMERCIAL_MIN = 70;
 const TRAVEL_SURCHARGE = 25;
 

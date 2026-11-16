@@ -1048,8 +1048,14 @@ export default function QuoteCalculator({
               class={inputClass}
               value={s.phone}
               placeholder="(540) 555-0123"
+              aria-describedby="sms-consent"
               onInput={(e) => update({ phone: formatUSPhone((e.currentTarget as HTMLInputElement).value) })}
             />
+            {/* SMS consent line (CEO ruling L-09, legal/safe version, 16 Nov 2026). Wording matches the
+                "Text messages (SMS)" section of privacy policy v2; ship with or after that page. */}
+            <p id="sms-consent" class="text-xs text-[#777] mt-1">
+              By sending this form, you agree that Gal Gone Green may text you about your quote and your cleaning, including follow-ups. Message frequency varies. Msg &amp; data rates may apply. Reply STOP to opt out or HELP for help. See our <a class="underline" href="/privacy">Privacy Policy</a>.
+            </p>
           </div>
           <div class="sm:col-span-2">
             <label class={labelClass}>Email<span class="text-[#c47f34]"> *</span></label>

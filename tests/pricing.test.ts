@@ -333,7 +333,7 @@ describe('STR turnovers', () => {
 describe('commercial recurring', () => {
   test('3000-4000 sqft office weekly', () => {
     // base 3.75, 1 restroom = 0 adj, 1 breakroom = 0.25 adj, office 1.0, weekly 1.0
-    // (3.75 + 0.25) * 1.0 * 1.0 = 4.0 hrs * $35 = $140
+    // (3.75 + 0.25) * 1.0 * 1.0 = 4.0 hrs * $44 = $176 → round 5 = $175
     const r = calculate({
       serviceType: 'commercial',
       squareFootage: '3000-4000',
@@ -342,13 +342,13 @@ describe('commercial recurring', () => {
       breakrooms: 1,
       frequency: 'weekly',
     });
-    expect(r.price).toBe(140);
+    expect(r.price).toBe(175);
     expect(r.hours).toBe(4.0);
   });
 
   test('medical facility monthly premium', () => {
     // 2000-3000 base 3.0, 2 restrooms = +0.25, 1 breakroom = +0.25, medical 1.3, monthly 1.2
-    // (3.0 + 0.5) * 1.3 * 1.2 = 5.46 → round 0.25 = 5.5, 5.5*35 = $192.50 → round 5 (half up) = $195
+    // (3.0 + 0.5) * 1.3 * 1.2 = 5.46 → round 0.25 = 5.5, 5.5*44 = $242 → round 5 = $240
     const r = calculate({
       serviceType: 'commercial',
       squareFootage: '2000-3000',
@@ -358,12 +358,12 @@ describe('commercial recurring', () => {
       frequency: 'monthly',
     });
     expect(r.hours).toBe(5.5);
-    expect(r.price).toBe(195);
+    expect(r.price).toBe(240);
   });
 
   test('restaurant 5x-week discount', () => {
     // 1500-2000 base 2.25, restaurant 1.25, 5x 0.80
-    // 2.25 * 1.25 * 0.80 = 2.25 → round 0.25 = 2.25, 2.25 * 35 = $78.75 → $80
+    // 2.25 * 1.25 * 0.80 = 2.25 → round 0.25 = 2.25, 2.25 * 44 = $99 → $100
     const r = calculate({
       serviceType: 'commercial',
       squareFootage: '1500-2000',
@@ -371,11 +371,11 @@ describe('commercial recurring', () => {
       frequency: '5x-week',
     });
     expect(r.hours).toBe(2.25);
-    expect(r.price).toBe(80);
+    expect(r.price).toBe(100);
   });
 
   test('small commercial enforces $70 minimum', () => {
-    // under-1000 base 1.25, office 1.0, 5x 0.8 = 1.0 hrs * $35 = $35, min $70
+    // under-1000 base 1.25, office 1.0, 5x 0.8 = 1.0 hrs * $44 = $44, min $70
     const r = calculate({
       serviceType: 'commercial',
       squareFootage: 'under-1000',
