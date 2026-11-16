@@ -34,7 +34,7 @@ export const locations: Location[] = [
     faq: [
       { q: 'Do you serve all neighborhoods in Harrisonburg?', a: 'Yes, we serve every neighborhood in Harrisonburg — from downtown and the JMU area to Sunset Heights, Park View, Purcell Park, and the developments along Port Republic Road and Neff Avenue.' },
       { q: 'How quickly can you schedule a cleaning in Harrisonburg?', a: 'We can typically schedule a cleaning within a few days. For urgent needs like move-outs or pre-event cleanings, we do our best to accommodate same-week requests.' },
-      { q: 'How much does house cleaning cost in Harrisonburg, VA?', a: "It depends on the size of your home and how often you'd like us to come. Enter your home details at galgonegreen.com/quote and you'll see a flat price right away, with no hourly billing. New regular clients also get the inside of their fridge and oven cleaned free on their first regular visit." },
+      { q: 'How much does house cleaning cost in Harrisonburg, VA?', a: "Regular cleans start at $90 a visit, and deep cleans start at $200 for homes under 1,500 square feet and $225 for larger homes. Your first visit costs more than the regular ones because it brings the home up to the standard the regular visits keep. Home size, bathrooms, pets and how often we come all change the price, so enter your home details at galgonegreen.com/quote and you'll see a flat price right away, with no hourly billing. New regular clients also get the inside of their fridge and oven cleaned free on their first regular visit." },
       { q: 'Will the same cleaner come every time?', a: 'Yes. We assign one cleaner to your home and keep them there, working to the same checklist every visit, so you never have to explain your home twice.' },
       { q: 'Do you clean Airbnb and short-term rentals in Harrisonburg?', a: 'Yes. We do turnover cleans between guests: beds and towels laundered, supplies refilled, the welcome basket set out, and the home left ready for check-in.' },
       { q: 'What cleaning products do you use?', a: "Eco-friendly products, on every job. If anyone in your home is sensitive to scents, tell us and we'll bring unscented products." },
@@ -385,7 +385,7 @@ export const locations: Location[] = [
       'Quick turnaround between guest bookings',
       'Eco-friendly products — appropriate for a mountain resort setting',
     ],
-    serviceEmphasis: 'Massanutten is one of our highest-volume areas for short-term rental cleaning. We specialize in same-day turnovers, deep cleans between seasons, and regular maintenance cleaning for year-round residents within the resort.',
+    serviceEmphasis: 'We clean short-term rentals in the Massanutten area, including turnovers between guests. We specialize in same-day turnovers, deep cleans between seasons, and regular maintenance cleaning for year-round residents within the resort.',
     faq: [
       { q: 'Do you handle same-day turnovers at Massanutten?', a: 'Yes — same-day turnovers between guest bookings are one of our specialties at Massanutten. We work around your checkout and check-in times.' },
       { q: 'Can you clean condos and timeshare units at Massanutten?', a: 'Absolutely. We clean all property types at Massanutten — condos, townhomes, cabins, and single-family homes.' },
