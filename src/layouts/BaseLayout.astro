@@ -80,6 +80,9 @@ const canonicalUrl = `https://galgonegreen.com${canonicalPath}`;
     gtag('config', 'AW-16751447114');
   </script>
 
+  {/* META PIXEL SLOT (L-24): empty on purpose. The ID lives in src/data/tracking.ts (META_PIXEL_ID = '').
+       No Meta code is added until Lena's spec (Meta audit s.9b) and the CEO's Dataset ID are both in hand; see tracking.ts. */}
+
   <!-- JSON-LD Schema -->
   {schema && (
     <script type="application/ld+json" set:html={JSON.stringify(schema)} />
